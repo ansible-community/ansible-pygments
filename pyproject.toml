@@ -9,7 +9,7 @@ description = "Tools for building the Ansible Distribution"
 authors = ["Felix Fontein <felix@fontein.de>"]
 license = "GPL-3.0-or-later"
 readme = "README.md"
-repository = "https://github.com/ansible-community/antsibull"
+repository = "https://github.com/ansible-community/sphinx_ansible_highlighter"
 packages = [
     { include = "sphinx_ansible_highlighter", from = "src" },
     { include = "tests", format = "sdist" }
