@@ -48,7 +48,7 @@ class AnsibleOutputPrimaryLexer(RegexLexer):
     Primary lexer for Ansible output.
     '''
 
-    name = 'Ansible-output-primary'  # pyre-ignore[15]
+    name = 'Ansible-output-primary'
 
     # The following definitions are borrowed from Pygment's JSON lexer.
     # It has been originally authored by Norman Richards.
@@ -168,7 +168,7 @@ class AnsibleOutputLexer(DelegatingLexer):
     The Ansible output Pygments lexer.
     '''
 
-    name = 'Ansible-output'  # pyre-ignore[15]
+    name = 'Ansible-output'
     aliases = ('ansible-output', )
 
     def __init__(self, **options):
