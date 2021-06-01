@@ -9,7 +9,7 @@ Unless otherwise noted in the code, it is licensed under the terms of the GNU Ge
 
 ## Using the Sphinx extension
 
-Include it in your Sphinx configuration ``conf.py``::
+Include it in your Sphinx configuration ``conf.py``:
 
 ```
 # Add it to 'extensions':

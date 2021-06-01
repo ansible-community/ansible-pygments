@@ -22,7 +22,10 @@ ansible-output = "sphinx_ansible_highlighter.pygments_lexer:AnsibleOutputLexer"
 [tool.poetry.dependencies]
 python = "^3.6.0"
 pygments = ">= 2.6.1"
-sphinx = "*"
+sphinx = { version = "*", optional = true }
+
+[tool.poetry.extras]
+sphinx = ["sphinx"]
 
 [tool.poetry.dev-dependencies]
 codecov = "*"
