@@ -11,7 +11,7 @@ license = "GPL-3.0-or-later"
 readme = "README.md"
 repository = "https://github.com/ansible-community/antsibull"
 packages = [
-    { include = "sphinx_ansible_highlighter" },
+    { include = "sphinx_ansible_highlighter", from = "src" },
     { include = "tests", format = "sdist" }
 ]
 
