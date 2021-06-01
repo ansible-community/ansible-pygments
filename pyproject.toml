@@ -11,7 +11,7 @@ license = "GPL-3.0-or-later"
 readme = "README.md"
 repository = "https://github.com/ansible-community/antsibull"
 packages = [
-    { include = "sphinx_ansible_highlighter" },
+    { include = "sphinx_ansible_highlighter", from = "src" },
     { include = "tests", format = "sdist" }
 ]
 
@@ -30,9 +30,6 @@ sphinx = ["sphinx"]
 [tool.poetry.dev-dependencies]
 codecov = "*"
 flake8 = ">= 3.8.0"
-mypy = "*"
-# https://github.com/facebook/pyre-check/issues/398
-pyre-check = "^0.0.46"
 pylint = "*"
 pytest = "*"
 pytest-cov = "*"
