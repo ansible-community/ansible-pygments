@@ -36,8 +36,6 @@
 Some Pygments lexers.
 '''
 
-from __future__ import (absolute_import, division, print_function)
-
 from pygments.lexer import DelegatingLexer, RegexLexer, bygroups, include
 from pygments.lexers import DiffLexer  # pylint: disable=no-name-in-module
 from pygments import token
