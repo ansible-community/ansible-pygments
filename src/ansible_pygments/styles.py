@@ -1,3 +1,7 @@
+'''
+Some Pygments styles.
+'''
+
 from pygments.style import Style
 from pygments.token import (
     Keyword,
@@ -13,11 +17,13 @@ from pygments.token import (
 )
 
 
-class AnsibleStyle(Style):
+class AnsibleStyle(Style):  # pylint: disable=too-few-public-methods
     """Ansible's GitHub-like highlighting."""
 
     background_color = "#f8f8f8"  # class: '.highlight'
-    highlight_color = "#ffffcc; border: 1px solid #edff00; padding-top: 2px; border-radius: 3px; display: block"
+    highlight_color = (
+        "#ffffcc; border: 1px solid #edff00; padding-top: 2px; border-radius: 3px; display: block"
+    )
     default_style = ""
 
     styles = {
@@ -39,7 +45,7 @@ class AnsibleStyle(Style):
         Keyword.Type: "#902000",  # class: 'kt'
         Operator: "bold #666666",  # class: 'o'
         Operator.Word: "bold #007020",  # class: 'ow'
-        # FIXME: Indicator?
+        # FIXME: Indicator?  pylint: disable=fixme
         Punctuation: "bold",  # class: 'p'
         Name: "#333333",  # class: 'n'
         Name.Attribute: "#008080",  # class: 'na'
@@ -60,7 +66,7 @@ class AnsibleStyle(Style):
         Name.Variable.Global: "#008080",  # class: 'vg'
         Name.Variable.Instance: "#008080",  # class: 'vi'
         Name.Variable.Magic: "#bb60d5",  # class: 'vm'
-        # FIXME: Literal.Number?
+        # FIXME: Literal.Number?  pylint: disable=fixme
         Number: "#208050",  # class: 'm'
         Literal: "#032f62",  # class: 'l'
         Literal.String: "#4070a0",  # class: 's'
