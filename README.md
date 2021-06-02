@@ -1,17 +1,33 @@
-# Ansible Sphinx Highlighter extension
+# Ansible [Pygments] lexer project
+
 [![Python linting badge](https://github.com/ansible-community/ansible-pygments/workflows/Python%20linting/badge.svg?event=push&branch=main)](https://github.com/ansible-community/ansible-pygments/actions?query=workflow%3A%22Python+linting%22+branch%3Amain)
 [![Python testing badge](https://github.com/ansible-community/ansible-pygments/workflows/Python%20testing/badge.svg?event=push&branch=main)](https://github.com/ansible-community/ansible-pygments/actions?query=workflow%3A%22Python+testing%22+branch%3Amain)
 [![Codecov badge](https://img.shields.io/codecov/c/github/ansible-community/ansible-pygments)](https://codecov.io/gh/ansible-community/ansible-pygments)
 
-This is the [Sphinx extension](https://www.sphinx-doc.org/en/master/) `ansible-pygments` which provides a lexer for Ansible output.
+This project provides a [Pygments] lexer that is able to handle
+[Ansible] output. It may be used anywhere Pygments is integrated.
+The lexer is registered globally under the name `ansible-output`.
 
-Unless otherwise noted in the code, it is licensed under the terms of the GNU General Public License v3 or, at your option, later.
+Unless otherwise noted in the code, it is licensed under the terms
+of the GNU General Public License v3 or, at your option, later.
 
-## Using the Sphinx extension
+## Using the lexer in [Sphinx]
 
-Include it in your Sphinx configuration ``conf.py``:
+Make sure this library in installed in the same env as your [Sphinx]
+automation via `pip install ansible-pygments sphinx`. Then, you should
+be able to use a lexer by its name `ansible-output` in the code blocks
+of your RST documents. For example:
 
+```rst
+.. code-block:: ansible-output
+
+    [WARNING]: Unable to find '/nosuchfile' in expected paths (use -vvvvv to see paths)
+
+    ok: [localhost] => {
+        "msg": ""
+    }
 ```
-# Add it to 'extensions':
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx', 'notfound.extension', 'ansible_pygments']
-```
+
+[Ansible]: https://www.ansible.com/?utm_medium=github-or-pypi&utm_source=ansible-pygments--readme
+[Pygments]: https://pygments.org
+[Sphinx]: https://www.sphinx-doc.org

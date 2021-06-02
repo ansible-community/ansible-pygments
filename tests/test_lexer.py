@@ -4,7 +4,7 @@ from pygments import highlight
 from pygments.lexers import YamlJinjaLexer
 from pygments.formatters import HtmlFormatter
 
-from ansible_pygments.pygments_lexer import AnsibleOutputLexer
+from ansible_pygments.lexers import AnsibleOutputLexer
 
 
 def run_test(data, lexer):
