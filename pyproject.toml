@@ -20,8 +20,9 @@ Ansible-output = "ansible_pygments.lexers:AnsibleOutputLexer"
 ansible-output = "ansible_pygments.lexers:AnsibleOutputLexer"
 
 [tool.poetry.dependencies]
-python = "^3.6.0"
-pygments = ">= 2.6.1"
+python = "~2.7 || ^3.6"
+# Pygments 2.4.0 includes bugfixes for YAML and YAML+Jinja lexers
+pygments = ">= 2.4.0"
 
 [tool.poetry.dev-dependencies]
 codecov = "*"
