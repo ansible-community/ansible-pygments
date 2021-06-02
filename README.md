@@ -1,4 +1,4 @@
-# Ansible [Pygments] lexer project
+# [Pygments] lexer and style Ansible snippets
 
 [![Python linting badge](https://github.com/ansible-community/ansible-pygments/workflows/Python%20linting/badge.svg?event=push&branch=main)](https://github.com/ansible-community/ansible-pygments/actions?query=workflow%3A%22Python+linting%22+branch%3Amain)
 [![Python testing badge](https://github.com/ansible-community/ansible-pygments/workflows/Python%20testing/badge.svg?event=push&branch=main)](https://github.com/ansible-community/ansible-pygments/actions?query=workflow%3A%22Python+testing%22+branch%3Amain)
@@ -7,6 +7,9 @@
 This project provides a [Pygments] lexer that is able to handle
 [Ansible] output. It may be used anywhere Pygments is integrated.
 The lexer is registered globally under the name `ansible-output`.
+
+It also provides a [Pygments] style for tools needing to highlight
+code snippets.
 
 Unless otherwise noted in the code, it is licensed under the terms
 of the GNU General Public License v3 or, at your option, later.
@@ -26,6 +29,16 @@ of your RST documents. For example:
     ok: [localhost] => {
         "msg": ""
     }
+```
+
+## Using the style in [Sphinx]
+
+It is possible to just set `ansible` in `conf.py` and it will "just
+work", provided that this project is installed alongside [Sphinx] as
+shown above.
+
+```python
+pygments_style = 'ansible'
 ```
 
 [Ansible]: https://www.ansible.com/?utm_medium=github-or-pypi&utm_source=ansible-pygments--readme

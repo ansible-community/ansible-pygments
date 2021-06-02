@@ -19,6 +19,10 @@ packages = [
 Ansible-output = "ansible_pygments.lexers:AnsibleOutputLexer"
 ansible-output = "ansible_pygments.lexers:AnsibleOutputLexer"
 
+[tool.poetry.plugins."pygments.styles"]
+Ansible = "ansible_pygments.styles:AnsibleStyle"
+ansible = "ansible_pygments.styles:AnsibleStyle"
+
 [tool.poetry.dependencies]
 python = "^3.6.0"
 pygments = ">= 2.6.1"
