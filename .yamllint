@@ -1,0 +1,11 @@
+extends: default
+
+rules:
+  indentation:
+    indent-sequences: false
+    level: error
+  truthy:
+    allowed-values:
+    - 'true'
+    - 'false'
+    - 'on'  # Allow "on" key name in GHA CI/CD workflow definitions
