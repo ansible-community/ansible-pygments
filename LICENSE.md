@@ -1,7 +1,7 @@
-Copyright 2019-2021 by Felix Fontein <felix@fontein.de>.
-Parts copyrighted 2006-2017 by the Pygments team, see AUTHORS at
-https://github.com/pygments/pygments/blob/3e1b79c82d2df318f63f24984d875fd2a3400808/AUTHORS.
-Parts copyrighted by Norman Richards (original author of JSON lexer).
+_Copyright 2019-2021 by Felix Fontein <felix@fontein.de>._
+_Parts copyrighted 2006-2017 by the Pygments team, see AUTHORS at
+https://github.com/pygments/pygments/blob/3e1b79c82d2df318f63f24984d875fd2a3400808/AUTHORS._
+_Parts copyrighted by Norman Richards (original author of JSON lexer)._
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
