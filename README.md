@@ -11,8 +11,7 @@ The lexer is registered globally under the name `ansible-output`.
 It also provides a [Pygments] style for tools needing to highlight
 code snippets.
 
-Unless otherwise noted in the code, it is licensed under the terms
-of the GNU General Public License v3 or, at your option, later.
+The code is licensed under the terms of the [BSD 2-Clause license].
 
 ## Using the lexer in [Sphinx]
 
@@ -44,3 +43,4 @@ pygments_style = 'ansible'
 [Ansible]: https://www.ansible.com/?utm_medium=github-or-pypi&utm_source=ansible-pygments--readme
 [Pygments]: https://pygments.org
 [Sphinx]: https://www.sphinx-doc.org
+[BSD 2-Clause license]: https://opensource.org/licenses/BSD-2-Clause
