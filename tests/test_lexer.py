@@ -1,7 +1,6 @@
 import pytest
 
 from pygments import highlight
-from pygments.lexers import YamlJinjaLexer
 from pygments.formatters import HtmlFormatter
 
 from ansible_pygments.lexers import AnsibleOutputLexer
@@ -11,57 +10,6 @@ def run_test(data, lexer):
     formatter = HtmlFormatter()
     result = highlight(data, lexer, formatter)
     return formatter.get_style_defs('.highlight'), result
-
-
-def test_yaml_jinja_lexer():
-    data = R"""
-# GOOD
-tempdir: C:\Windows\Temp
-
-# WORKS
-tempdir: 'C:\Windows\Temp'
-tempdir: "C:\\Windows\\Temp"
-
-# BAD, BUT SOMETIMES WORKS
-tempdir: C:\\Windows\\Temp
-tempdir: 'C:\\Windows\\Temp'
-tempdir: C:/Windows/Temp
-
-# FAILS
-tempdir: "C:\Windows\Temp"
-
----
-# Example of single quotes when they are required
-- name: Copy tomcat config
-  win_copy:
-    src: log4j.xml
-    dest: '{{tc_home}}\lib\log4j.xml'
-"""
-    _, result = run_test(data, YamlJinjaLexer())
-
-    assert result == R"""<div class="highlight"><pre><span></span><span class="c1"># GOOD</span>
-<span class="nt">tempdir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">C:\Windows\Temp</span>
-
-<span class="c1"># WORKS</span>
-<span class="nt">tempdir</span><span class="p">:</span> <span class="s">&#39;C:\Windows\Temp&#39;</span>
-<span class="nt">tempdir</span><span class="p">:</span> <span class="s">&quot;C:\\Windows\\Temp&quot;</span>
-
-<span class="c1"># BAD, BUT SOMETIMES WORKS</span>
-<span class="nt">tempdir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">C:\\Windows\\Temp</span>
-<span class="nt">tempdir</span><span class="p">:</span> <span class="s">&#39;C:\\Windows\\Temp&#39;</span>
-<span class="nt">tempdir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">C:/Windows/Temp</span>
-
-<span class="c1"># FAILS</span>
-<span class="nt">tempdir</span><span class="p">:</span> <span class="s">&quot;C:</span><span class="err">\</span><span class="s">Windows</span><span class="err">\</span><span class="s">Temp&quot;</span>
-
-<span class="nn">---</span>
-<span class="c1"># Example of single quotes when they are required</span>
-<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Copy tomcat config</span>
-  <span class="nt">win_copy</span><span class="p">:</span>
-    <span class="nt">src</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">log4j.xml</span>
-    <span class="nt">dest</span><span class="p">:</span> <span class="s">&#39;</span><span class="cp">{{</span><span class="nv">tc_home</span><span class="cp">}}</span><span class="s">\lib\log4j.xml&#39;</span>
-</pre></div>
-"""
 
 
 def test_ansible_output_lexer():
