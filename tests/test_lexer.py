@@ -1,4 +1,3 @@
-# coding: utf-8
 # Author: Felix Fontein <felix@fontein.de>
 # License: BSD-2-Clause
 # Copyright: Felix Fontein <felix@fontein.de>, 2021
