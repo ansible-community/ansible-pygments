@@ -28,7 +28,7 @@ ok: [windows] => {
 }
 
 TASK [paused] ************************************************************************************************************************************
-Sunday 11 November 2018  20:16:48 +0100 (0:00:00.041)       0:07:59.637 ******* 
+Sunday 11 November 2018  20:16:48 +0100 (0:00:00.041)       0:07:59.637 *******
 --- before
 +++ after
 @@ -1,5 +1,5 @@
@@ -45,7 +45,7 @@ Sunday 11 November 2018  20:16:48 +0100 (0:00:00.041)       0:07:59.637 *******
 changed: [localhost]
 
 TASK [volumes (more volumes)] ********************************************************************************************************************
-Sunday 11 November 2018  20:19:25 +0100 (0:00:00.607)       0:10:36.974 ******* 
+Sunday 11 November 2018  20:19:25 +0100 (0:00:00.607)       0:10:36.974 *******
 --- before
 +++ after
 @@ -1,11 +1,11 @@
@@ -81,7 +81,7 @@ changed: [localhost]
 <span class="p">}</span>
 
 <span class="k">TASK</span> <span class="p">[</span><span class="l">paused</span><span class="p">]</span> <span class="nv">************************************************************************************************************************************</span>
-Sunday 11 November 2018  20:16:48 +0100 (0:00:00.041)       0:07:59.637 ******* 
+Sunday 11 November 2018  20:16:48 +0100 (0:00:00.041)       0:07:59.637 *******
 <span class="gd">--- before</span>
 <span class="gi">+++ after</span>
 <span class="gu">@@ -1,5 +1,5 @@</span>
@@ -98,7 +98,7 @@ Sunday 11 November 2018  20:16:48 +0100 (0:00:00.041)       0:07:59.637 *******
 <span class="k">changed</span><span class="p">:</span> <span class="p">[</span><span class="nv">localhost</span><span class="p">]</span>
 
 <span class="k">TASK</span> <span class="p">[</span><span class="l">volumes (more volumes)</span><span class="p">]</span> <span class="nv">********************************************************************************************************************</span>
-Sunday 11 November 2018  20:19:25 +0100 (0:00:00.607)       0:10:36.974 ******* 
+Sunday 11 November 2018  20:19:25 +0100 (0:00:00.607)       0:10:36.974 *******
 <span class="gd">--- before</span>
 <span class="gi">+++ after</span>
 <span class="gu">@@ -1,11 +1,11 @@</span>
