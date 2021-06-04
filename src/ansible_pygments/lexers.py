@@ -67,9 +67,13 @@ class AnsibleOutputPrimaryLexer(RegexLexer):
         # represents a simple terminal value
         'simplevalue': [
             (r'(true|false|null)\b', token.Keyword.Constant),
-            (('%(int_part)s(%(frac_part)s%(exp_part)s|'
-              '%(exp_part)s|%(frac_part)s)') % vars(),
-             token.Number.Float),
+            (
+                (
+                    '%(int_part)s(%(frac_part)s%(exp_part)s|'
+                    '%(exp_part)s|%(frac_part)s)'
+                ) % vars(),
+                token.Number.Float,
+            ),
             (int_part, token.Number.Integer),
             (r'"(\\\\|\\"|[^"])*"', token.String),
         ],
@@ -120,7 +124,7 @@ class AnsibleOutputPrimaryLexer(RegexLexer):
                     token.Text, token.Punctuation,
                     token.Text, token.Punctuation,
                 ),
-                'objectvalue'
+                'objectvalue',
             ),
         ],
 
@@ -145,7 +149,7 @@ class AnsibleOutputPrimaryLexer(RegexLexer):
                     token.Punctuation,
                 ),
                 'host-error',
-            )
+            ),
         ],
 
         'host-result': [
@@ -171,9 +175,11 @@ class AnsibleOutputPrimaryLexer(RegexLexer):
                     token.Name.Variable, token.Text,
                 ),
             ),
-            (r'(fatal|ok|changed|skipping)(:)( )',
+            (
+                r'(fatal|ok|changed|skipping)(:)( )',
                 bygroups(token.Keyword, token.Punctuation, token.Text),
-                'host-name'),
+                'host-name',
+            ),
             (
                 r'(\[)(WARNING)(\]:)([^\n]+)',
                 bygroups(
@@ -181,9 +187,11 @@ class AnsibleOutputPrimaryLexer(RegexLexer):
                     token.Punctuation, token.Text,
                 ),
             ),
-            (r'([^ ]+)( +)(:)',
+            (
+                r'([^ ]+)( +)(:)',
                 bygroups(token.Name, token.Text, token.Punctuation),
-                'host-result'),
+                'host-result',
+            ),
             (
                 r'(\tto retry, use: )(.*)(\n)',
                 bygroups(token.Text, token.Literal.String, token.Text),
@@ -197,7 +205,7 @@ class AnsibleOutputLexer(DelegatingLexer):
     """The Ansible output Pygments lexer."""
 
     name = 'Ansible-output'
-    aliases = ('ansible-output', )
+    aliases = ('ansible-output',)
 
     def __init__(self, **options):
         """Initialize the lexer with delegation."""
