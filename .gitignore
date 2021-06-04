@@ -128,3 +128,6 @@ poetry.lock
 *.in
 *.build
 *.deps
+
+# pytest + coveragepy reports
+/.test-results/
