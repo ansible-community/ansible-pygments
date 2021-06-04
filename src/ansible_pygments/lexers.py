@@ -165,5 +165,4 @@ class AnsibleOutputLexer(DelegatingLexer):
 
     def __init__(self, **options):
         """Initialize the lexer with delegation."""
-        # pylint: disable=super-with-arguments
-        super(AnsibleOutputLexer, self).__init__(DiffLexer, AnsibleOutputPrimaryLexer, **options)
+        super().__init__(DiffLexer, AnsibleOutputPrimaryLexer, **options)

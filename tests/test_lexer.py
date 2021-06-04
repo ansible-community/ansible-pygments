@@ -4,6 +4,8 @@
 """Tests for Pygments lexers."""
 
 from pygments import highlight
+# pylint: disable=no-name-in-module
+# Ref: https://github.com/PyCQA/pylint/issues/491
 from pygments.formatters import HtmlFormatter
 
 from ansible_pygments.lexers import AnsibleOutputLexer
@@ -72,6 +74,7 @@ changed: [localhost]
     _, result = run_test(data, AnsibleOutputLexer())
     print(result)
 
+    # pylint: disable=line-too-long
     assert result == R"""<div class="highlight"><pre><span></span><span class="k">ok</span><span class="p">:</span> <span class="p">[</span><span class="nv">windows</span><span class="p">]</span> <span class="p">=&gt;</span> <span class="p">{</span>
     <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="nt">&quot;account_name&quot;</span><span class="p">:</span> <span class="s">&quot;vagrant-domain&quot;</span><span class="p">,</span>
