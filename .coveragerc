@@ -22,6 +22,7 @@ exclude_lines =
 
 [run]
 branch = true
+command_line = -m pytest
 cover_pylib = false
 parallel = true
 relative_files = true
