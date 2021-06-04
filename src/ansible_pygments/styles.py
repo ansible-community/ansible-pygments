@@ -20,13 +20,17 @@ class AnsibleStyle(Style):  # pylint: disable=too-few-public-methods
 
     background_color = "#f8f8f8"  # class: '.highlight'
     highlight_color = (
-        "#ffffcc; border: 1px solid #edff00; padding-top: 2px; border-radius: 3px; display: block"
+        "#ffffcc; "
+        "border: 1px solid #edff00; "
+        "padding-top: 2px; "
+        "border-radius: 3px; "
+        "display: block"
     )
     default_style = ""
 
     styles = {
         Error: "#a61717 bg:#e3d2d2 border:#FF0000",  # class: 'err'
-        # Error:                     "#a61717 bg:#e3d2d2 border:1px solid #FF0000", # class: 'err'
+        # Error: "#a61717 bg:#e3d2d2 border:1px solid #FF0000", # class: 'err'
         Comment: "italic #6a737d",  # class: 'c'
         Comment.Preproc: "noitalic #007020",  # class: 'cp'
         Comment.PreprocFile: "italic #6a737d",  # class: 'cpf'

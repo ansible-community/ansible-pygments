@@ -1,7 +1,7 @@
 # Copyright 2019-2021 by Felix Fontein <felix@fontein.de>
 #
 # Copyright 2006-2017 by the Pygments team, see AUTHORS at
-# https://github.com/pygments/pygments/blob/3e1b79c82d2df318f63f24984d875fd2a3400808/AUTHORS
+# https://github.com/pygments/pygments/blob/3e1b79c8/AUTHORS
 # Copyright by Norman Richards (original author of JSON lexer).
 #
 # Licensed under BSD license:
@@ -92,7 +92,7 @@ class AnsibleOutputPrimaryLexer(RegexLexer):
             (r'\}', token.Punctuation, '#pop'),
         ],
 
-        # json array - [ value, value, ... }
+        # json array - [ value, value, ... ]
         'arrayvalue': [
             include('whitespace'),
             include('value'),
@@ -100,7 +100,8 @@ class AnsibleOutputPrimaryLexer(RegexLexer):
             (r'\]', token.Punctuation, '#pop'),
         ],
 
-        # a json value - either a simple value or a complex value (object or array)
+        # NOTE: This is a JSON value - either a simple value or a complex
+        # NOTE: value (object or array):
         'value': [
             include('whitespace'),
             include('simplevalue'),
@@ -113,45 +114,80 @@ class AnsibleOutputPrimaryLexer(RegexLexer):
 
         'host-postfix': [
             (r'\n', token.Text, '#pop:3'),
-            (r'( )(=>)( )(\{)',
-                bygroups(token.Text, token.Punctuation, token.Text, token.Punctuation),
-                'objectvalue'),
+            (
+                r'( )(=>)( )(\{)',
+                bygroups(
+                    token.Text, token.Punctuation,
+                    token.Text, token.Punctuation,
+                ),
+                'objectvalue'
+            ),
         ],
 
         'host-error': [
-            (r'(?:(:)( )(UNREACHABLE|FAILED)(!))?',
-                bygroups(token.Punctuation, token.Text, token.Keyword, token.Punctuation),
-                'host-postfix'),
+            (
+                r'(?:(:)( )(UNREACHABLE|FAILED)(!))?',
+                bygroups(
+                    token.Punctuation, token.Text,
+                    token.Keyword, token.Punctuation,
+                ),
+                'host-postfix',
+            ),
             (r'', token.Text, 'host-postfix'),
         ],
 
         'host-name': [
-            (r'(\[)([^ \]]+)(?:( )(=>)( )([^\]]+))?(\])',
-                bygroups(token.Punctuation, token.Name.Variable, token.Text, token.Punctuation,
-                         token.Text, token.Name.Variable, token.Punctuation),
-                'host-error')
+            (
+                r'(\[)([^ \]]+)(?:( )(=>)( )([^\]]+))?(\])',
+                bygroups(
+                    token.Punctuation, token.Name.Variable, token.Text,
+                    token.Punctuation, token.Text, token.Name.Variable,
+                    token.Punctuation,
+                ),
+                'host-error',
+            )
         ],
 
         'host-result': [
             (r'\n', token.Text, '#pop'),
-            (r'( +)(ok|changed|failed|skipped|unreachable|rescued|ignored)(=)([0-9]+)',
-                bygroups(token.Text, token.Keyword, token.Punctuation, token.Number.Integer)),
+            (
+                (
+                    r'( +)(ok|changed|failed|skipped'
+                    r'|unreachable|rescued|ignored)(=)([0-9]+)'
+                ),
+                bygroups(
+                    token.Text, token.Keyword,
+                    token.Punctuation, token.Number.Integer,
+                ),
+            ),
         ],
 
         'root': [
-            (r'(PLAY|TASK|PLAY RECAP)(?:( )(\[)([^\]]+)(\]))?( )(\*+)(\n)',
-                bygroups(token.Keyword, token.Text, token.Punctuation, token.Literal,
-                         token.Punctuation, token.Text, token.Name.Variable, token.Text)),
+            (
+                r'(PLAY|TASK|PLAY RECAP)(?:( )(\[)([^\]]+)(\]))?( )(\*+)(\n)',
+                bygroups(
+                    token.Keyword, token.Text, token.Punctuation,
+                    token.Literal, token.Punctuation, token.Text,
+                    token.Name.Variable, token.Text,
+                ),
+            ),
             (r'(fatal|ok|changed|skipping)(:)( )',
                 bygroups(token.Keyword, token.Punctuation, token.Text),
                 'host-name'),
-            (r'(\[)(WARNING)(\]:)([^\n]+)',
-                bygroups(token.Punctuation, token.Keyword, token.Punctuation, token.Text)),
+            (
+                r'(\[)(WARNING)(\]:)([^\n]+)',
+                bygroups(
+                    token.Punctuation, token.Keyword,
+                    token.Punctuation, token.Text,
+                ),
+            ),
             (r'([^ ]+)( +)(:)',
                 bygroups(token.Name, token.Text, token.Punctuation),
                 'host-result'),
-            (r'(\tto retry, use: )(.*)(\n)', bygroups(token.Text, token.Literal.String,
-                                                      token.Text)),
+            (
+                r'(\tto retry, use: )(.*)(\n)',
+                bygroups(token.Text, token.Literal.String, token.Text),
+            ),
             (r'.*\n', token.Other),
         ],
     }
