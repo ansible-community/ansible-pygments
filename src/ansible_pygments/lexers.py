@@ -34,9 +34,9 @@
 
 """Pygments lexers for ansible console output."""
 
+from pygments import token
 from pygments.lexer import DelegatingLexer, RegexLexer, bygroups, include
 from pygments.lexers import DiffLexer  # pylint: disable=no-name-in-module
-from pygments import token
 
 
 class AnsibleOutputPrimaryLexer(RegexLexer):
