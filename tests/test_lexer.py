@@ -1,6 +1,7 @@
 # Author: Felix Fontein <felix@fontein.de>
 # License: BSD-2-Clause
 # Copyright: Felix Fontein <felix@fontein.de>, 2021
+"""Tests for Pygments lexers."""
 
 import pytest
 
@@ -11,12 +12,14 @@ from ansible_pygments.lexers import AnsibleOutputLexer
 
 
 def run_test(data, lexer):
+    """Format the data snippet as HTML using a given lexer."""
     formatter = HtmlFormatter()
     result = highlight(data, lexer, formatter)
     return formatter.get_style_defs('.highlight'), result
 
 
 def test_ansible_output_lexer():
+    """Test that AnsibleOutputLexer produces expected HTML output."""
     data = R"""
 ok: [windows] => {
     "account": {

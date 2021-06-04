@@ -32,9 +32,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-'''
-Some Pygments lexers.
-'''
+"""Pygments lexers for ansible console output."""
 
 from pygments.lexer import DelegatingLexer, RegexLexer, bygroups, include
 from pygments.lexers import DiffLexer  # pylint: disable=no-name-in-module
@@ -42,9 +40,7 @@ from pygments import token
 
 
 class AnsibleOutputPrimaryLexer(RegexLexer):
-    '''
-    Primary lexer for Ansible output.
-    '''
+    """Primary lexer for Ansible output."""
 
     name = 'Ansible-output-primary'
 
@@ -162,13 +158,12 @@ class AnsibleOutputPrimaryLexer(RegexLexer):
 
 
 class AnsibleOutputLexer(DelegatingLexer):
-    '''
-    The Ansible output Pygments lexer.
-    '''
+    """The Ansible output Pygments lexer."""
 
     name = 'Ansible-output'
     aliases = ('ansible-output', )
 
     def __init__(self, **options):
+        """Initialize the lexer with delegation."""
         # pylint: disable=super-with-arguments
         super(AnsibleOutputLexer, self).__init__(DiffLexer, AnsibleOutputPrimaryLexer, **options)

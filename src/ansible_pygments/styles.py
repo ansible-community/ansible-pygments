@@ -1,6 +1,4 @@
-'''
-Some Pygments styles.
-'''
+"""Pygments styles for highlighting snippets in Ansible ecosystem."""
 
 from pygments.style import Style
 from pygments.token import (
