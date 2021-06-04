@@ -49,7 +49,7 @@ per-file-ignores =
 
   # The lexer test compares huge HTML snippets that have legit long lines:
   # E501 line too long
-  tests/test_lexer.py: E501
+  tests/lexer_test.py: E501
 
 # flake8-eradicate
 # E800:
