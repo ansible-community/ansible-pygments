@@ -1,3 +1,8 @@
+[html]
+directory = .test-results/pytest/cov/
+show_contexts = true
+skip_covered = false
+
 [paths]
 source =
   src/ansible_pygments
