@@ -1,5 +1,8 @@
 [flake8]
 
+# Print the total number of errors:
+count = true
+
 # Don't even try to analyze these:
 extend-exclude =
   # No need to traverse egg info dir
@@ -50,6 +53,9 @@ per-file-ignores =
   # The lexer test compares huge HTML snippets that have legit long lines:
   # E501 line too long
   tests/lexer_test.py: E501
+
+# Count the number of occurrences of each error/warning code and print a report:
+statistics = true
 
 # flake8-eradicate
 # E800:
