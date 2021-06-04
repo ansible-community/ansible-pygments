@@ -3,8 +3,6 @@
 # Copyright: Felix Fontein <felix@fontein.de>, 2021
 """Tests for Pygments lexers."""
 
-import pytest
-
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 
