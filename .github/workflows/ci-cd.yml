@@ -1,0 +1,348 @@
+---
+name: CI/CD
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+  # Run once per week (Monday at 06:00 UTC)
+  schedule:
+  - cron: 0 6 * * 1
+
+jobs:
+  pre-setup:
+    name: Pre-set global build settings
+    if: >-  # https://twitter.com/webKnjaZ/status/1308803017001652225
+      github.event_name != 'create' ||
+      github.event.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: python
+    outputs:
+      dist_version: ${{ steps.scm_version.outputs.dist_version }}
+      is_untagged_devel: >-
+        ${{ steps.not_tagged_check.outputs.is_untagged_devel || false }}
+      is_tagged: ${{ steps.tagged_check.outputs.is_tagged || false }}
+      cache_key_files: >-
+        ${{ steps.calc_cache_key_files.outputs.files_hash_key }}
+      sdist_artifact_name: ${{ steps.artifact_name.outputs.sdist }}
+      wheel_artifact_name: ${{ steps.artifact_name.outputs.wheel }}
+    steps:
+    - name: Switch to using Python 3.9 by default
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: >-
+        Mark the build as non-tagged
+        ${{ github.event.repository.default_branch }} build
+      id: not_tagged_check
+      if: >-
+        github.event_name == 'push' &&
+        github.ref == format(
+          'refs/heads/{0}', github.event.repository.default_branch
+        )
+      run: >-
+        print('::set-output name=is_untagged_devel::true')
+    - name: Mark the build as tagged
+      id: tagged_check
+      if: >-  # "create" workflows run separately from "push" & "pull_request"
+        github.event_name == 'create' &&
+        github.event.ref_type == 'tag'
+      run: >-
+        print('::set-output name=is_tagged::true')
+    - name: Check out src from Git
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: >-
+          ${{ steps.tagged_check.outputs.is_tagged == 'true' && 1 || 0 }}
+    - name: >-
+        Calculate Python interpreter version hash value
+        for use in the cache key
+      id: calc_cache_key_py
+      run: |
+        from hashlib import sha512
+        from sys import version
+        hash = sha512(version.encode()).hexdigest()
+        print(f'::set-output name=py_hash_key::{hash}')
+    - name: >-
+        Calculate dependency files' combined hash value
+        for use in the cache key
+      id: calc_cache_key_files
+      run: |
+        from hashlib import sha512
+        hashes_combo = sha512('-'.join((
+          "${{ hashFiles('tox.ini')}}",
+          "${{ hashFiles('pyproject.toml') }}",
+          "${{ hashFiles('.pre-commit-config.yaml') }}",
+          "${{ hashFiles('pytest.ini') }}",
+        )).encode()).hexdigest()
+        print(f'::set-output name=files_hash_key::{hashes_combo}')
+    - name: Set up pip cache
+      uses: actions/cache@v2.1.5
+      with:
+        path: >-
+          ${{
+              runner.os == 'Linux'
+              && '~/.cache/pip'
+              || '~/Library/Caches/pip'
+          }}
+        key: >-
+          ${{ runner.os }}-pip-${{
+          steps.calc_cache_key_py.outputs.py_hash_key }}-${{
+          steps.calc_cache_key_files.outputs.files_hash_key }}
+        restore-keys: |
+          ${{ runner.os }}-pip-${{ steps.calc_cache_key_py.outputs.py_hash_key }}-
+          ${{ runner.os }}-pip-
+          ${{ runner.os }}-
+    - name: Drop Git tags from HEAD for non-tag-create events
+      if: >-
+        steps.tagged_check.outputs.is_tagged != 'true'
+      run: >-
+        git tag --points-at HEAD
+        |
+        xargs git tag --delete
+      shell: bash
+    - name: Set up versioning prerequisites
+      run: >-
+        python -m
+        pip install
+        --user
+        setuptools-scm
+      shell: bash
+    - name: Set the current dist version
+      id: scm_version
+      run: |
+        import setuptools_scm
+        ver = setuptools_scm.get_version(
+          ${{ steps.not_tagged_check.outputs.is_untagged_devel == 'true' && 'local_scheme="no-local-version"' || '' }}
+        )
+        print('::set-output name=dist_version::{ver}'.format(ver=ver))
+    - name: Set the current dist version
+      id: artifact_name
+      run: |
+        print('::set-output name=sdist::ansible-pygments-${{
+            steps.scm_version.outputs.dist_version
+        }}.tar.gz')
+        print('::set-output name=wheel::ansible_pygments-${{
+            steps.scm_version.outputs.dist_version
+        }}-py3-none-any.whl')
+
+  build:
+    name: 🏗 sdist & wheel 📦
+    needs:
+    - pre-setup
+    runs-on: ubuntu-latest
+
+    env:
+      PY_COLORS: 1
+      TOXENV: cleanup-dists,build-dists,metadata-validation
+      TOX_PARALLEL_NO_SPINNER: 1
+
+    steps:
+    - name: Switch to using Python 3.9 by default
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: >-
+        Calculate Python interpreter version hash value
+        for use in the cache key
+      id: calc_cache_key_py
+      run: |
+        from hashlib import sha512
+        from sys import version
+
+        hash = sha512(version.encode()).hexdigest()
+        print(f'::set-output name=py_hash_key::{hash}')
+      shell: python
+    - name: Get pip cache dir
+      id: pip-cache
+      run: >-
+        echo "::set-output name=dir::$(pip cache dir)"
+    - name: Set up pip cache
+      uses: actions/cache@v2.1.5
+      with:
+        path: ${{ steps.pip-cache.outputs.dir }}
+        key: >-
+          ${{ runner.os }}-pip-${{
+          steps.calc_cache_key_py.outputs.py_hash_key }}-${{
+          needs.pre-setup.outputs.cache_key_files }}
+        restore-keys: |
+          ${{ runner.os }}-pip-${{ steps.calc_cache_key_py.outputs.py_hash_key }}-
+          ${{ runner.os }}-pip-
+    - name: Install tox
+      run: >-
+        python -m
+        pip install
+        --user
+        tox
+
+    - name: Grab the source from Git
+      uses: actions/checkout@v2
+    - name: >-
+        Update the project version to ${{
+            needs.pre-setup.outputs.dist_version
+        }}, in-tree
+      run: >-
+        sed -i
+        's#^\(version\s\+=\s\+\).*#\1"${{
+            needs.pre-setup.outputs.dist_version
+        }}"#'
+        pyproject.toml
+    - name: Pre-populate tox env
+      run: >-
+        python -m
+        tox
+        -p auto
+        --parallel-live -vvvv
+        --skip-missing-interpreters false
+        --notest
+    - name: Build dists and verify their metadata
+      run: >-
+        python -m
+        tox
+        -p auto
+        --parallel-live -vvvv
+        --skip-missing-interpreters false
+
+    - name: Store the Python package distributions
+      uses: actions/upload-artifact@v2
+      with:
+        name: python-package-distributions
+        # NOTE: Exact expected file names are specified here
+        # NOTE: as a safety measure — if anything weird ends
+        # NOTE: up being in this dir or not all dists will be
+        # NOTE: produced, this will fail the workflow.
+        path: |
+          dist/${{ needs.pre-setup.outputs.sdist_artifact_name }}
+          dist/${{ needs.pre-setup.outputs.wheel_artifact_name }}
+        retention-days: 4
+
+  tests:
+    name: >-
+      🐍${{
+          matrix.python-version
+      }} / ${{
+          matrix.tested-artifact
+      }} @ ${{
+          matrix.os
+      }}
+    needs:
+    - build
+    - pre-setup  # transitive, for accessing settings
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      matrix:
+        os:
+        - Ubuntu
+        - macOS
+        - Windows
+        python-version:
+        - 3.9
+        - pypy-3.7
+        - 3.6
+        - 3.8
+        - 3.7
+        - 3.10.0-alpha - 3.10.0
+        - pypy-3.6
+        tested-artifact:
+        - wheel
+        - sdist
+        exclude:
+        - os: Windows
+          python-version: pypy-3.6
+
+    env:
+      ARTIFACT_NAME: >-
+        ${{
+            matrix.tested-artifact == 'wheel'
+            && needs.pre-setup.outputs.wheel_artifact_name
+            || needs.pre-setup.outputs.sdist_artifact_name
+        }}
+      PIP_DISABLE_PIP_VERSION_CHECK: 1
+      PIP_NO_PYTHON_VERSION_WARNING: 1
+      PIP_NO_WARN_SCRIPT_LOCATION: 1
+      PY_COLORS: 1
+      TOXENV: python
+      TOX_PARALLEL_NO_SPINNER: 1
+
+    steps:
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install tox
+      run: >-
+        python -m
+        pip install
+        --user
+        tox
+
+    - name: Grab the source from Git
+      uses: actions/checkout@v2
+    - name: Download all the dists
+      uses: actions/download-artifact@v2
+      with:
+        name: python-package-distributions
+        path: dist/
+
+    - name: Pre-populate tox env
+      run: >-
+        python -m
+        tox
+        -p auto
+        --parallel-live -vvvv
+        --skip-missing-interpreters false
+        --notest
+        --installpkg 'dist/${{ env.ARTIFACT_NAME }}'
+
+    - name: Run tests
+      run: >-
+        python -m
+        tox
+        -p auto
+        --parallel-live -vvvv
+        --skip-missing-interpreters false
+    - name: Send coverage data to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        file: .test-results/pytest/cov.xml
+        flags: >-
+          GHA,
+          ${{ runner.os }},
+          ${{ matrix.python-version }},
+          ${{ env.ARTIFACT_NAME }}
+
+  publish:
+    name: Publish 🐍📦 to (Test)PyPI
+    needs:
+    - pre-setup  # transitive, for accessing settings
+    - tests
+    if: >-
+      fromJSON(needs.pre-setup.outputs.is_untagged_devel) ||
+      fromJSON(needs.pre-setup.outputs.is_tagged)
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download all the dists
+      uses: actions/download-artifact@v2
+      with:
+        name: python-package-distributions
+        path: dist/
+    - name: Publish 🐍📦 to TestPyPI
+      if: >-
+        fromJSON(needs.pre-setup.outputs.is_untagged_devel) ||
+        fromJSON(needs.pre-setup.outputs.is_tagged)
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        password: ${{ secrets.TESTPYPI_API_TOKEN }}
+        repository_url: https://test.pypi.org/legacy/
+    - name: Publish 🐍📦 to PyPI
+      if: fromJSON(needs.pre-setup.outputs.is_tagged)
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        password: ${{ secrets.PYPI_API_TOKEN }}
+...
