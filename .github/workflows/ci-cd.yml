@@ -8,6 +8,31 @@ on:
   pull_request:
     branches:
     - main
+  workflow_dispatch:
+    inputs:
+      release-version:
+      # github.event_name == 'workflow_dispatch'
+      # && github.event.inputs.release-version
+        description: >-
+          Target PEP440-compliant version to release.
+          Please, don't prepend `v`.
+        required: true
+      release-commitish:
+      # github.event_name == 'workflow_dispatch'
+      # && github.event.inputs.release-committish
+        default: ''
+        description: >-
+          The commit to be released to PyPI and tagged
+          in Git as `release-version`. Normally, you
+          should keep this empty.
+      YOLO:
+        default: false
+        description: >-
+          Flag whether test results should block the
+          release (true/false). Only use this under
+          extraordinary circumstances to ignore the
+          test failures and cut the release regardless.
+        required: true
   # Run once per week (Monday at 06:00 UTC)
   schedule:
   - cron: 0 6 * * 1
@@ -15,20 +40,23 @@ on:
 jobs:
   pre-setup:
     name: Pre-set global build settings
-    if: >-  # https://twitter.com/webKnjaZ/status/1308803017001652225
-      github.event_name != 'create' ||
-      github.event.ref_type == 'tag'
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: python
     outputs:
-      dist_version: ${{ steps.scm_version.outputs.dist_version }}
+      dist_version: >-
+        ${{
+            steps.tagged_check.outputs.release_requested == 'true'
+            && github.event.inputs.release-version
+            || steps.scm_version.outputs.dist_version
+        }}
       is_untagged_devel: >-
         ${{ steps.not_tagged_check.outputs.is_untagged_devel || false }}
-      is_tagged: ${{ steps.tagged_check.outputs.is_tagged || false }}
+      release_requested: ${{ steps.tagged_check.outputs.release_requested || false }}
       cache_key_files: >-
         ${{ steps.calc_cache_key_files.outputs.files_hash_key }}
+      git_tag: ${{ steps.git_tag.outputs.tag }}
       sdist_artifact_name: ${{ steps.artifact_name.outputs.sdist }}
       wheel_artifact_name: ${{ steps.artifact_name.outputs.wheel }}
     steps:
@@ -49,19 +77,21 @@ jobs:
         print('::set-output name=is_untagged_devel::true')
     - name: Mark the build as tagged
       id: tagged_check
-      if: >-  # "create" workflows run separately from "push" & "pull_request"
-        github.event_name == 'create' &&
-        github.event.ref_type == 'tag'
+      if: github.event_name == 'workflow_dispatch'
       run: >-
-        print('::set-output name=is_tagged::true')
+        print('::set-output name=release_requested::true')
     - name: Check out src from Git
+      if: >-
+        steps.tagged_check.outputs.release_requested != 'true'
       uses: actions/checkout@v2
       with:
-        fetch-depth: >-
-          ${{ steps.tagged_check.outputs.is_tagged == 'true' && 1 || 0 }}
+        fetch-depth: 0
+        ref: ${{ github.event.inputs.release-committish }}
     - name: >-
         Calculate Python interpreter version hash value
         for use in the cache key
+      if: >-
+        steps.tagged_check.outputs.release_requested != 'true'
       id: calc_cache_key_py
       run: |
         from hashlib import sha512
@@ -71,6 +101,8 @@ jobs:
     - name: >-
         Calculate dependency files' combined hash value
         for use in the cache key
+      if: >-
+        steps.tagged_check.outputs.release_requested != 'true'
       id: calc_cache_key_files
       run: |
         from hashlib import sha512
@@ -82,6 +114,8 @@ jobs:
         )).encode()).hexdigest()
         print(f'::set-output name=files_hash_key::{hashes_combo}')
     - name: Set up pip cache
+      if: >-
+        steps.tagged_check.outputs.release_requested != 'true'
       uses: actions/cache@v2.1.5
       with:
         path: >-
@@ -100,20 +134,23 @@ jobs:
           ${{ runner.os }}-
     - name: Drop Git tags from HEAD for non-tag-create events
       if: >-
-        steps.tagged_check.outputs.is_tagged != 'true'
+        steps.tagged_check.outputs.release_requested != 'true'
       run: >-
         git tag --points-at HEAD
         |
         xargs git tag --delete
       shell: bash
     - name: Set up versioning prerequisites
+      if: >-
+        steps.tagged_check.outputs.release_requested != 'true'
       run: >-
         python -m
         pip install
         --user
         setuptools-scm
       shell: bash
-    - name: Set the current dist version
+    - name: Set the current dist version from Git
+      if: steps.tagged_check.outputs.release_requested != 'true'
       id: scm_version
       run: |
         import setuptools_scm
@@ -121,6 +158,14 @@ jobs:
           ${{ steps.not_tagged_check.outputs.is_untagged_devel == 'true' && 'local_scheme="no-local-version"' || '' }}
         )
         print('::set-output name=dist_version::{ver}'.format(ver=ver))
+    - name: Set the target Git tag
+      id: git_tag
+      run: >-
+        print('::set-output name=tag::v${{
+            steps.tagged_check.outputs.release_requested == 'true'
+            && github.event.inputs.release-version
+            || steps.scm_version.outputs.dist_version
+        }}')
     - name: Set the expected dist artifact names
       id: artifact_name
       run: |
@@ -184,6 +229,8 @@ jobs:
 
     - name: Grab the source from Git
       uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.inputs.release-committish }}
     - name: >-
         Update the project version to ${{
             needs.pre-setup.outputs.dist_version
@@ -257,6 +304,14 @@ jobs:
         - os: Windows
           python-version: pypy-3.6
 
+    continue-on-error: >-
+      ${{
+          (
+            needs.pre-setup.outputs.release_requested == 'true' &&
+            !toJSON(github.event.inputs.YOLO)
+          ) && true || false
+      }}
+
     env:
       ARTIFACT_NAME: >-
         ${{
@@ -285,6 +340,8 @@ jobs:
 
     - name: Grab the source from Git
       uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.inputs.release-committish }}
     - name: Download all the dists
       uses: actions/download-artifact@v2
       with:
@@ -325,26 +382,48 @@ jobs:
     - tests
     if: >-
       fromJSON(needs.pre-setup.outputs.is_untagged_devel) ||
-      fromJSON(needs.pre-setup.outputs.is_tagged)
+      fromJSON(needs.pre-setup.outputs.release_requested)
     runs-on: ubuntu-latest
 
     steps:
+    - name: Check out src from Git
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Setup git user as [bot]
+      run: >
+        git config --local user.email
+        'github-actions[bot]@users.noreply.github.com'
+
+        git config --local user.name 'github-actions[bot]'
+
+    - name: >-
+        Tag the release in the local Git repo
+        as ${{ needs.pre-setup.outputs.git_tag }}
+      run: >-
+        git tag '${{ needs.pre-setup.outputs.git_tag }}'
+        ${{ github.event.inputs.release-committish }}
     - name: Download all the dists
       uses: actions/download-artifact@v2
       with:
         name: python-package-distributions
         path: dist/
-    - name: Publish 🐍📦 to TestPyPI
+    - name: Publish 🐍📦  ${{ needs.pre-setup.outputs.git_tag }}to TestPyPI
       if: >-
         fromJSON(needs.pre-setup.outputs.is_untagged_devel) ||
-        fromJSON(needs.pre-setup.outputs.is_tagged)
+        fromJSON(needs.pre-setup.outputs.release_requested)
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         password: ${{ secrets.TESTPYPI_API_TOKEN }}
         repository_url: https://test.pypi.org/legacy/
-    - name: Publish 🐍📦 to PyPI
-      if: fromJSON(needs.pre-setup.outputs.is_tagged)
+    - name: Publish 🐍📦 ${{ needs.pre-setup.outputs.git_tag }} to PyPI
+      if: fromJSON(needs.pre-setup.outputs.release_requested)
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         password: ${{ secrets.PYPI_API_TOKEN }}
+    - name: >-
+        Push ${{ needs.pre-setup.outputs.git_tag }} tag corresponding
+        to the just published release back to GitHub
+      run: >-
+        git push --atomic origin '${{ needs.pre-setup.outputs.git_tag }}'
 ...
