@@ -121,7 +121,7 @@ jobs:
           ${{ steps.not_tagged_check.outputs.is_untagged_devel == 'true' && 'local_scheme="no-local-version"' || '' }}
         )
         print('::set-output name=dist_version::{ver}'.format(ver=ver))
-    - name: Set the current dist version
+    - name: Set the expected dist artifact names
       id: artifact_name
       run: |
         print('::set-output name=sdist::ansible-pygments-${{
