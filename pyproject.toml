@@ -15,6 +15,13 @@ packages = [
     { include = "tests", format = "sdist" }
 ]
 
+[tool.poetry.urls]
+"Mailing lists" = "https://docs.ansible.com/ansible/latest/community/communication.html#mailing-list-information"
+"Code of Conduct" = "https://docs.ansible.com/ansible/latest/community/code_of_conduct.html"
+"CI: GitHub" = "https://github.com/ansible-community/ansible-pygments/actions?branch:main+event:push"
+"CI: CodeCov" = "https://app.codecov.io/gh/ansible-community/ansible-pygments"
+"Bug tracker" = "https://github.com/ansible-community/ansible-pygments"
+
 [tool.poetry.plugins."pygments.lexers"]
 Ansible-output = "ansible_pygments.lexers:AnsibleOutputLexer"
 ansible-output = "ansible_pygments.lexers:AnsibleOutputLexer"
