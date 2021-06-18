@@ -1,7 +1,7 @@
 # [Pygments] lexer and style Ansible snippets
 
 [![Python linting badge](https://github.com/ansible-community/ansible-pygments/workflows/Python%20linting/badge.svg?event=push&branch=main)](https://github.com/ansible-community/ansible-pygments/actions?query=workflow%3A%22Python+linting%22+branch%3Amain)
-[![Python testing badge](https://github.com/ansible-community/ansible-pygments/workflows/Python%20testing/badge.svg?event=push&branch=main)](https://github.com/ansible-community/ansible-pygments/actions?query=workflow%3A%22Python+testing%22+branch%3Amain)
+[![GitHub Actions CI/CD workflow](https://github.com/ansible-community/ansible-pygments/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/ansible-community/ansible-pygments/actions/workflows/ci-cd.yml)
 [![Codecov badge](https://img.shields.io/codecov/c/github/ansible-community/ansible-pygments)](https://codecov.io/gh/ansible-community/ansible-pygments)
 
 This project provides a [Pygments] lexer that is able to handle
