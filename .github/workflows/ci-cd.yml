@@ -169,10 +169,14 @@ jobs:
       id: artifact_name
       run: |
         print('::set-output name=sdist::ansible-pygments-${{
-            steps.scm_version.outputs.dist_version
+            steps.tagged_check.outputs.release_requested == 'true'
+            && github.event.inputs.release-version
+            || steps.scm_version.outputs.dist_version
         }}.tar.gz')
         print('::set-output name=wheel::ansible_pygments-${{
-            steps.scm_version.outputs.dist_version
+            steps.tagged_check.outputs.release_requested == 'true'
+            && github.event.inputs.release-version
+            || steps.scm_version.outputs.dist_version
         }}-py3-none-any.whl')
 
   build:
