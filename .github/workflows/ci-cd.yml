@@ -132,7 +132,9 @@ jobs:
         }}-py3-none-any.whl')
 
   build:
-    name: 🏗 sdist & wheel 📦
+    name: >-
+      🏗 sdist & wheel 📦
+      v${{ needs.pre-setup.outputs.dist_version }}
     needs:
     - pre-setup
     runs-on: ubuntu-latest
