@@ -391,10 +391,12 @@ jobs:
 
     steps:
     - name: Check out src from Git
+      if: fromJSON(needs.pre-setup.outputs.release_requested)
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
     - name: Setup git user as [bot]
+      if: fromJSON(needs.pre-setup.outputs.release_requested)
       run: >
         git config --local user.email
         'github-actions[bot]@users.noreply.github.com'
@@ -404,6 +406,7 @@ jobs:
     - name: >-
         Tag the release in the local Git repo
         as ${{ needs.pre-setup.outputs.git_tag }}
+      if: fromJSON(needs.pre-setup.outputs.release_requested)
       run: >-
         git tag '${{ needs.pre-setup.outputs.git_tag }}'
         ${{ github.event.inputs.release-committish }}
@@ -428,6 +431,7 @@ jobs:
     - name: >-
         Push ${{ needs.pre-setup.outputs.git_tag }} tag corresponding
         to the just published release back to GitHub
+      if: fromJSON(needs.pre-setup.outputs.release_requested)
       run: >-
         git push --atomic origin '${{ needs.pre-setup.outputs.git_tag }}'
 ...
