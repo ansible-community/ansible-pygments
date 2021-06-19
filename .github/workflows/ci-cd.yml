@@ -11,15 +11,15 @@ on:
   workflow_dispatch:
     inputs:
       release-version:
-      # github.event_name == 'workflow_dispatch'
-      # && github.event.inputs.release-version
+        # github.event_name == 'workflow_dispatch'
+        # && github.event.inputs.release-version
         description: >-
           Target PEP440-compliant version to release.
           Please, don't prepend `v`.
         required: true
       release-commitish:
-      # github.event_name == 'workflow_dispatch'
-      # && github.event.inputs.release-committish
+        # github.event_name == 'workflow_dispatch'
+        # && github.event.inputs.release-committish
         default: ''
         description: >-
           The commit to be released to PyPI and tagged
@@ -52,7 +52,10 @@ jobs:
         }}
       is_untagged_devel: >-
         ${{ steps.not_tagged_check.outputs.is_untagged_devel || false }}
-      release_requested: ${{ steps.tagged_check.outputs.release_requested || false }}
+      release_requested: >-
+        ${{
+            steps.tagged_check.outputs.release_requested || false
+        }}
       cache_key_files: >-
         ${{ steps.calc_cache_key_files.outputs.files_hash_key }}
       git_tag: ${{ steps.git_tag.outputs.tag }}
@@ -128,7 +131,9 @@ jobs:
           steps.calc_cache_key_py.outputs.py_hash_key }}-${{
           steps.calc_cache_key_files.outputs.files_hash_key }}
         restore-keys: |
-          ${{ runner.os }}-pip-${{ steps.calc_cache_key_py.outputs.py_hash_key }}-
+          ${{ runner.os }}-pip-${{
+              steps.calc_cache_key_py.outputs.py_hash_key
+          }}-
           ${{ runner.os }}-pip-
           ${{ runner.os }}-
     - name: Drop Git tags from HEAD for non-tag-create events
@@ -154,7 +159,10 @@ jobs:
       run: |
         import setuptools_scm
         ver = setuptools_scm.get_version(
-          ${{ steps.not_tagged_check.outputs.is_untagged_devel == 'true' && 'local_scheme="no-local-version"' || '' }}
+          ${{
+              steps.not_tagged_check.outputs.is_untagged_devel == 'true'
+              && 'local_scheme="no-local-version"' || ''
+          }}
         )
         print('::set-output name=dist_version::{ver}'.format(ver=ver))
     - name: Set the target Git tag
@@ -221,7 +229,9 @@ jobs:
           steps.calc_cache_key_py.outputs.py_hash_key }}-${{
           needs.pre-setup.outputs.cache_key_files }}
         restore-keys: |
-          ${{ runner.os }}-pip-${{ steps.calc_cache_key_py.outputs.py_hash_key }}-
+          ${{ runner.os }}-pip-${{
+              steps.calc_cache_key_py.outputs.py_hash_key
+          }}-
           ${{ runner.os }}-pip-
     - name: Install tox
       run: >-
