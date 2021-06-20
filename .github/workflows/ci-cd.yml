@@ -38,10 +38,10 @@ on:
 
 jobs:
   lint:
-    name: Linters
+    name: Linters @ py${{ python-version }} @ ${{ matrix.os }}
     needs:
     - pre-setup
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
         os:
