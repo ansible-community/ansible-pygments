@@ -396,6 +396,8 @@ jobs:
         exclude:
         - os: Windows
           python-version: pypy-3.6
+        - os: macOS
+          python-version: pypy-3.6
 
     continue-on-error: >-
       ${{
