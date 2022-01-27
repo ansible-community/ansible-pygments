@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "ansible-pygments"
-version = "0.1.0"
+version = "0.1.1"
 description = "Tools for building the Ansible Distribution"
 authors = ["Felix Fontein <felix@fontein.de>"]
 license = "BSD-2-Clause"
