@@ -45,6 +45,8 @@ flake8 = ">= 3.8.0"
 pylint = "*"
 pytest = "*"
 pytest-cov = "*"
+# The following is needed for unit tests to pass
+pygments = ">= 2.11.0"
 
 [tool.isort]
 balanced_wrapping = true
