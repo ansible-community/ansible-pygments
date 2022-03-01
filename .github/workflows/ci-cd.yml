@@ -490,7 +490,7 @@ jobs:
         --skip-missing-interpreters false
         --skip-pkg-install
     - name: Send coverage data to Codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v2
       with:
         file: .test-results/pytest/cov.xml
         flags: >-
