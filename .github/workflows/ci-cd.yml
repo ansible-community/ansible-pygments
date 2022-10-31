@@ -256,7 +256,7 @@ jobs:
     - name: Set the expected dist artifact names
       id: artifact_name
       run: |
-        print('::set-output name=sdist::ansible-pygments-${{
+        print('::set-output name=sdist::ansible_pygments-${{
             steps.tagged_check.outputs.release_requested == 'true'
             && github.event.inputs.release-version
             || steps.scm_version.outputs.dist_version
