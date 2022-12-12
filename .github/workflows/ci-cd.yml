@@ -542,6 +542,11 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
+    - name: Grab the source from Git
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.inputs.release-committish }}
+
     - name: Figure out if the interpreter ABI is stable
       id: py-abi
       run: |
@@ -608,10 +613,6 @@ jobs:
         --user
         tox
 
-    - name: Grab the source from Git
-      uses: actions/checkout@v3
-      with:
-        ref: ${{ github.event.inputs.release-committish }}
     - name: Download all the dists
       uses: actions/download-artifact@v3
       with:
