@@ -161,15 +161,15 @@ jobs:
     outputs:
       dist-version: >-
         ${{
-            steps.tagged-check.outputs.release-requested == 'true'
+            steps.request-check.outputs.release-requested == 'true'
             && github.event.inputs.release-version
             || steps.scm-version.outputs.dist-version
         }}
       is-untagged-devel: >-
-        ${{ steps.untagged-check.outputs.is-untagged-devel || false }}
+        ${{ steps.unrequest-check.outputs.is-untagged-devel || false }}
       release-requested: >-
         ${{
-            steps.tagged-check.outputs.release-requested || false
+            steps.request-check.outputs.release-requested || false
         }}
       cache-key-files: >-
         ${{ steps.calc-cache-key-files.outputs.files-hash-key }}
@@ -184,7 +184,7 @@ jobs:
     - name: >-
         Mark the build as non-tagged
         ${{ github.event.repository.default_branch }} build
-      id: untagged-check
+      id: unrequest-check
       if: >-
         github.event_name == 'push' &&
         github.ref == format(
@@ -201,7 +201,7 @@ jobs:
         ) as outputs_file:
             print('is-untagged-devel=true', file=outputs_file)
     - name: Mark the build as tagged
-      id: tagged-check
+      id: request-check
       if: github.event_name == 'workflow_dispatch'
       run: >-
         from os import environ
@@ -215,7 +215,7 @@ jobs:
             print('release-requested=true', file=outputs_file)
     - name: Check out src from Git
       if: >-
-        steps.tagged-check.outputs.release-requested != 'true'
+        steps.request-check.outputs.release-requested != 'true'
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
@@ -224,7 +224,7 @@ jobs:
         Calculate Python interpreter version hash value
         for use in the cache key
       if: >-
-        steps.tagged-check.outputs.release-requested != 'true'
+        steps.request-check.outputs.release-requested != 'true'
       run: |
         from hashlib import sha512
         from os import environ
@@ -243,7 +243,7 @@ jobs:
         Calculate dependency files' combined hash value
         for use in the cache key
       if: >-
-        steps.tagged-check.outputs.release-requested != 'true'
+        steps.request-check.outputs.release-requested != 'true'
       id: calc-cache-key-files
       run: |
         from os import environ
@@ -264,7 +264,7 @@ jobs:
             print(f'files-hash-key={hashes_combo}', file=outputs_file)
     - name: Set up pip cache
       if: >-
-        steps.tagged-check.outputs.release-requested != 'true'
+        steps.request-check.outputs.release-requested != 'true'
       uses: actions/cache@v3
       with:
         path: >-
@@ -285,7 +285,7 @@ jobs:
           ${{ runner.os }}-
     - name: Drop Git tags from HEAD for non-tag-create events
       if: >-
-        steps.tagged-check.outputs.release-requested != 'true'
+        steps.request-check.outputs.release-requested != 'true'
       run: >-
         git tag --points-at HEAD
         |
@@ -293,7 +293,7 @@ jobs:
       shell: bash
     - name: Set up versioning prerequisites
       if: >-
-        steps.tagged-check.outputs.release-requested != 'true'
+        steps.request-check.outputs.release-requested != 'true'
       run: >-
         python -m
         pip install
@@ -301,7 +301,7 @@ jobs:
         setuptools-scm
       shell: bash
     - name: Set the current dist version from Git
-      if: steps.tagged-check.outputs.release-requested != 'true'
+      if: steps.request-check.outputs.release-requested != 'true'
       id: scm-version
       run: |
         from os import environ
@@ -313,7 +313,7 @@ jobs:
 
         ver = setuptools_scm.get_version(
           ${{
-              steps.untagged-check.outputs.is-untagged-devel == 'true'
+              steps.unrequest-check.outputs.is-untagged-devel == 'true'
               && 'local_scheme="no-local-version"' || ''
           }}
         )
