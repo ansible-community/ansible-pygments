@@ -534,11 +534,7 @@ jobs:
         fetch-depth: 0
     - name: Setup git user as [bot]
       if: fromJSON(needs.pre-setup.outputs.release_requested)
-      run: >
-        git config --local user.email
-        'github-actions[bot]@users.noreply.github.com'
-
-        git config --local user.name 'github-actions[bot]'
+      uses: fregante/setup-git-user@v1.1.0
 
     - name: >-
         Tag the release in the local Git repo
