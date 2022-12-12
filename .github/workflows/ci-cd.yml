@@ -99,7 +99,7 @@ jobs:
         tox
 
     - name: Grab the source from Git
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Pre-populate tox env
       run: >-
@@ -165,7 +165,7 @@ jobs:
     - name: Check out src from Git
       if: >-
         steps.tagged_check.outputs.release_requested != 'true'
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
         ref: ${{ github.event.inputs.release-committish }}
@@ -321,7 +321,7 @@ jobs:
         tox
 
     - name: Grab the source from Git
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         ref: ${{ github.event.inputs.release-committish }}
     - name: >-
@@ -473,7 +473,7 @@ jobs:
         tox
 
     - name: Grab the source from Git
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         ref: ${{ github.event.inputs.release-committish }}
     - name: Download all the dists
@@ -529,7 +529,7 @@ jobs:
     steps:
     - name: Check out src from Git
       if: fromJSON(needs.pre-setup.outputs.release_requested)
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
     - name: Setup git user as [bot]
