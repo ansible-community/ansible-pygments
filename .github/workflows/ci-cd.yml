@@ -527,6 +527,20 @@ jobs:
       if: steps.coverage-files.outputs.present == 'true'
       run: >-
         cat code-coverage-results.md >> "${GITHUB_STEP_SUMMARY}"
+    - name: Re-run the failing tests with maximum verbosity
+      if: failure()
+      run: >-  # `exit 1` makes sure that the job remains red with flaky runs
+        python -m
+        tox
+        --parallel auto
+        --parallel-live
+        --skip-missing-interpreters false
+        -vvvvv
+        --skip-pkg-install
+        --
+        --no-cov -vvvvv --lf
+        && exit 1
+      shell: bash
     - name: Send coverage data to Codecov
       uses: codecov/codecov-action@v3
       with:
