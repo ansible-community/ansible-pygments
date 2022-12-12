@@ -490,9 +490,9 @@ jobs:
         --skip-missing-interpreters false
         --skip-pkg-install
     - name: Send coverage data to Codecov
-      uses: codecov/codecov-action@v2
+      uses: codecov/codecov-action@v3
       with:
-        file: .test-results/pytest/cov.xml
+        files: .test-results/pytest/cov.xml
         flags: >-
           GHA,
           ${{ runner.os }},
