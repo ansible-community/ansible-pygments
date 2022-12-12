@@ -379,7 +379,7 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-latest
+        - ubuntu-22.04
         - macos-latest
         - windows-latest
         python-version:
