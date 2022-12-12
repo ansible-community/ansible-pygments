@@ -383,11 +383,12 @@ jobs:
         - macos-latest
         - windows-latest
         python-version:
-        - 3.9
+        - 3.11
         - pypy-3.7
         - 3.6
         - 3.8
         - 3.7
+        - 3.9
         - >-
           3.10
         - pypy-3.6
