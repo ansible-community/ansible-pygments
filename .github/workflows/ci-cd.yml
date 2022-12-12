@@ -17,7 +17,7 @@ on:
           Target PEP440-compliant version to release.
           Please, don't prepend `v`.
         required: true
-      release-commitish:
+      release-committish:
         # github.event_name == 'workflow_dispatch'
         # && github.event.inputs.release-committish
         default: ''
