@@ -246,6 +246,7 @@ jobs:
         steps.request-check.outputs.release-requested != 'true'
       id: calc-cache-key-files
       run: |
+        from hashlib import sha512
         from os import environ
         from pathlib import Path
 
