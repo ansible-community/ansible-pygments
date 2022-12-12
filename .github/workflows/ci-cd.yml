@@ -351,7 +351,7 @@ jobs:
         --skip-missing-interpreters false
 
     - name: Store the Python package distributions
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: python-package-distributions
         # NOTE: Exact expected file names are specified here
@@ -477,7 +477,7 @@ jobs:
       with:
         ref: ${{ github.event.inputs.release-committish }}
     - name: Download all the dists
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: python-package-distributions
         path: dist/
@@ -548,7 +548,7 @@ jobs:
         git tag '${{ needs.pre-setup.outputs.git_tag }}'
         ${{ github.event.inputs.release-committish }}
     - name: Download all the dists
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: python-package-distributions
         path: dist/
