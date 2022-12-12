@@ -492,7 +492,7 @@ jobs:
         - windows-latest
         python-version:
         - 3.11
-        - pypy-3.7
+        - pypy-3.9
         - 3.6
         - 3.8
         - 3.7
