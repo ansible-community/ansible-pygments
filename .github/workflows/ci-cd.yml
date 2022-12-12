@@ -36,6 +36,17 @@ on:
   schedule:
   - cron: 0 6 * * 1
 
+concurrency:
+  group: >-
+    ${{
+        github.workflow
+    }}-${{
+        github.ref_type
+    }}-${{
+        github.event.pull_request.number || github.sha
+    }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     name: >-
