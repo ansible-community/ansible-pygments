@@ -500,6 +500,11 @@ jobs:
         --parallel-live
         --skip-missing-interpreters false
         --skip-pkg-install
+    - name: Produce markdown test summary from JUnit
+      if: always()
+      uses: test-summary/action@v2.0
+      with:
+        paths: .test-results/pytest/results.xml
     - name: Send coverage data to Codecov
       uses: codecov/codecov-action@v3
       with:
