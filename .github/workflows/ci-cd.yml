@@ -388,7 +388,8 @@ jobs:
         - 3.6
         - 3.8
         - 3.7
-        - 3.10.0-alpha - 3.10.0
+        - >-
+          3.10
         - pypy-3.6
         tested-artifact:
         - wheel
