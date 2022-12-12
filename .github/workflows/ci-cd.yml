@@ -203,7 +203,7 @@ jobs:
     - name: Mark the build as tagged
       id: request-check
       if: github.event_name == 'workflow_dispatch'
-      run: >-
+      run: |
         from os import environ
         from pathlib import Path
 
@@ -324,7 +324,7 @@ jobs:
             print(f'dist-version={ver}', file=outputs_file)
     - name: Set the target Git tag
       id: git-tag
-      run: >-
+      run: |
         from os import environ
         from pathlib import Path
 
