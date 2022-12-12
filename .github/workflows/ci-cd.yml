@@ -396,10 +396,19 @@ jobs:
         - wheel
         - sdist
         exclude:
+        # NOTE: GNU/Linux CPython 3.6 is not built for Ubuntu 22
+        - os: ubuntu-22.04
+          python-version: 3.6
         - os: windows-latest
           python-version: pypy-3.6
-        - os: macOS
+        - os: macos-latest
           python-version: pypy-3.6
+        include:
+        # NOTE: The last GNU/Linux CPython 3.6 available is built for Ubuntu 20
+        # https://github.com/actions/python-versions/blob/6dd0b75/versions-manifest.json#L3956-L3960
+        - os: ubuntu-20.04
+          python-version: 3.6
+          tested-artifact: wheel
 
     continue-on-error: >-
       ${{
