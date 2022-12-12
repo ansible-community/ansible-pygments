@@ -507,7 +507,13 @@ jobs:
     if: >-
       fromJSON(needs.pre-setup.outputs.is_untagged_devel) ||
       fromJSON(needs.pre-setup.outputs.release_requested)
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      # NOTE: Even though it's one job, it's easier to keep the params in one
+      # NOTE: place using a matrix:
+      matrix:
+        os:
+        - ubuntu-latest
 
     steps:
     - name: Check out src from Git
