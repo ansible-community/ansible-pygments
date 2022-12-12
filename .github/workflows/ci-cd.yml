@@ -166,7 +166,7 @@ jobs:
             || steps.scm-version.outputs.dist-version
         }}
       is-untagged-devel: >-
-        ${{ steps.not-tagged-check.outputs.is-untagged-devel || false }}
+        ${{ steps.untagged-check.outputs.is-untagged-devel || false }}
       release-requested: >-
         ${{
             steps.tagged-check.outputs.release-requested || false
@@ -184,7 +184,7 @@ jobs:
     - name: >-
         Mark the build as non-tagged
         ${{ github.event.repository.default_branch }} build
-      id: not-tagged-check
+      id: untagged-check
       if: >-
         github.event_name == 'push' &&
         github.ref == format(
@@ -313,7 +313,7 @@ jobs:
 
         ver = setuptools_scm.get_version(
           ${{
-              steps.not-tagged-check.outputs.is-untagged-devel == 'true'
+              steps.untagged-check.outputs.is-untagged-devel == 'true'
               && 'local_scheme="no-local-version"' || ''
           }}
         )
