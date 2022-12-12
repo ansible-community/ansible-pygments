@@ -375,13 +375,13 @@ jobs:
     needs:
     - build
     - pre-setup  # transitive, for accessing settings
-    runs-on: ${{ matrix.os }}-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os:
-        - Ubuntu
-        - macOS
-        - Windows
+        - ubuntu-latest
+        - macos-latest
+        - windows-latest
         python-version:
         - 3.9
         - pypy-3.7
@@ -394,7 +394,7 @@ jobs:
         - wheel
         - sdist
         exclude:
-        - os: Windows
+        - os: windows-latest
           python-version: pypy-3.6
         - os: macOS
           python-version: pypy-3.6
