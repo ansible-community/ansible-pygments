@@ -59,7 +59,7 @@ statistics = true
 
 # flake8-eradicate
 # E800:
-eradicate-whitelist-extend = distutils:\s+libraries\s+=\s+|isort:\s+\w+
+eradicate-whitelist-extend = isort:\s+\w+
 
 # flake8-pytest-style
 # PT001:
