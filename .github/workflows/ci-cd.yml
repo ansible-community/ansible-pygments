@@ -657,9 +657,11 @@ jobs:
       with:
         files: .test-results/pytest/cov.xml
         flags: >-
-          GHA,
-          ${{ runner.os }},
-          ${{ matrix.python-version }},
+          CI-GHA,
+          OS-${{
+            runner.os
+          }},
+          Py-${{ matrix.python-version }},
           ${{ env.ARTIFACT_NAME }}
 
   publish:
