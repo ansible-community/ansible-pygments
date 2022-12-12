@@ -537,6 +537,7 @@ jobs:
 
     steps:
     - name: Set up Python ${{ matrix.python-version }}
+      id: python-install
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
@@ -661,7 +662,9 @@ jobs:
           OS-${{
             runner.os
           }},
-          Py-${{ matrix.python-version }},
+          Py-${{
+            steps.python-install.outputs.python-version
+          }},
           ${{ env.ARTIFACT_NAME }}
 
   publish:
