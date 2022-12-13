@@ -626,6 +626,7 @@ jobs:
 
     - name: Pre-populate tox env
       run: >-
+        ${{ runner.os == 'Windows' && 'chcp.com 65001 &&' || '' }}
         python -m
         tox
         --parallel auto
@@ -636,6 +637,7 @@ jobs:
 
     - name: Run tests
       run: >-
+        ${{ runner.os == 'Windows' && 'chcp.com 65001 &&' || '' }}
         python -m
         tox
         --parallel auto
@@ -672,6 +674,7 @@ jobs:
     - name: Re-run the failing tests with maximum verbosity
       if: failure()
       run: >-  # `exit 1` makes sure that the job remains red with flaky runs
+        ${{ runner.os == 'Windows' && 'chcp.com 65001 &&' || '' }}
         python -m
         tox
         --parallel auto
