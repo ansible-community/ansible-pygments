@@ -660,12 +660,15 @@ jobs:
         --skip-missing-interpreters false
         --skip-pkg-install
     - name: Produce markdown test summary from JUnit
-      if: always()
+      if: >-
+        !cancelled()
       uses: test-summary/action@v2.0
       with:
         paths: .test-results/pytest/results.xml
     - name: Check if Cobertura XML coverage files exist
-      if: runner.os == 'Linux'
+      if: >-
+        !cancelled()
+        && runner.os == 'Linux'
       id: coverage-files
       run: >-
         compgen -G '.test-results/pytest/cov.xml'
@@ -687,7 +690,9 @@ jobs:
       run: >-
         cat code-coverage-results.md >> "${GITHUB_STEP_SUMMARY}"
     - name: Re-run the failing tests with maximum verbosity
-      if: failure()
+      if: >-
+        !cancelled()
+        && failure()
       run: >-  # `exit 1` makes sure that the job remains red with flaky runs
         ${{ runner.os == 'Windows' && 'chcp.com 65001 &&' || '' }}
         python -m
@@ -702,6 +707,8 @@ jobs:
         && exit 1
       shell: bash
     - name: Send coverage data to Codecov
+      if: >-
+        !cancelled()
       uses: codecov/codecov-action@v3
       with:
         files: .test-results/pytest/cov.xml
