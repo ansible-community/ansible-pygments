@@ -56,6 +56,7 @@ env:
   PRE_COMMIT_COLOR: 1
   PY_COLORS: 1  # Recognized by the `py` package, dependency of `pytest`
   PYTHONIOENCODING: utf-8
+  PYTHONLEGACYWINDOWSSTDIO: 1  # Python 3.6 hack
   PYTHONUTF8: 1
   TOX_PARALLEL_NO_SPINNER: 1
   TOX_TESTENV_PASSENV: >-  # Make tox-wrapped tools see color requests
