@@ -593,6 +593,7 @@ jobs:
       id: pip-cache
       run: >-
         echo "dir=$(python -m pip cache dir)" >> "${GITHUB_OUTPUT}"
+      shell: bash
     - name: Set up pip cache
       if: fromJSON(steps.py-abi.outputs.is-stable-abi)
       uses: actions/cache@v3
