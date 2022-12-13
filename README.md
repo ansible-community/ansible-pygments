@@ -1,8 +1,8 @@
-# [Pygments] lexer and style Ansible snippets
-
 [![🧪 GitHub Actions CI/CD workflow tests badge]][GHA workflow runs list]
 [![pre-commit.ci status badge]][pre-commit.ci results page]
 [![Codecov badge]][Codecov coverage page]
+
+# [Pygments] lexer and style Ansible snippets
 
 This project provides a [Pygments] lexer that is able to handle
 [Ansible] output. It may be used anywhere Pygments is integrated.
