@@ -1,6 +1,7 @@
 # [Pygments] lexer and style Ansible snippets
 
 [![GitHub Actions CI/CD workflow](https://github.com/ansible-community/ansible-pygments/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/ansible-community/ansible-pygments/actions/workflows/ci-cd.yml)
+[![pre-commit.ci status badge]][pre-commit.ci results page]
 [![Codecov badge](https://img.shields.io/codecov/c/github/ansible-community/ansible-pygments)](https://codecov.io/gh/ansible-community/ansible-pygments)
 
 This project provides a [Pygments] lexer that is able to handle
@@ -38,6 +39,11 @@ shown above.
 ```python
 pygments_style = 'ansible'
 ```
+
+[pre-commit.ci results page]:
+https://results.pre-commit.ci/latest/github/ansible-community/ansible-pygments/main
+[pre-commit.ci status badge]:
+https://results.pre-commit.ci/badge/github/ansible-community/ansible-pygments/main.svg
 
 [Ansible]: https://www.ansible.com/?utm_medium=github-or-pypi&utm_source=ansible-pygments--readme
 [Pygments]: https://pygments.org
