@@ -1,8 +1,8 @@
 # [Pygments] lexer and style Ansible snippets
 
-[![GitHub Actions CI/CD workflow](https://github.com/ansible-community/ansible-pygments/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/ansible-community/ansible-pygments/actions/workflows/ci-cd.yml)
+[![🧪 GitHub Actions CI/CD workflow tests badge]][GHA workflow runs list]
 [![pre-commit.ci status badge]][pre-commit.ci results page]
-[![Codecov badge](https://img.shields.io/codecov/c/github/ansible-community/ansible-pygments)](https://codecov.io/gh/ansible-community/ansible-pygments)
+[![Codecov badge]][Codecov coverage page]
 
 This project provides a [Pygments] lexer that is able to handle
 [Ansible] output. It may be used anywhere Pygments is integrated.
@@ -39,6 +39,15 @@ shown above.
 ```python
 pygments_style = 'ansible'
 ```
+
+[Codecov badge]:
+https://img.shields.io/codecov/c/github/ansible-community/ansible-pygments
+[Codecov coverage page]:
+https://codecov.io/gh/ansible-community/ansible-pygments
+
+[🧪 GitHub Actions CI/CD workflow tests badge]:
+https://github.com/ansible-community/ansible-pygments/actions/workflows/ci-cd.yml/badge.svg?branch=main&event=push
+[GHA workflow runs list]: https://github.com/ansible-community/ansible-pygments/actions/workflows/ci-cd.yml?query=branch%3Amain
 
 [pre-commit.ci results page]:
 https://results.pre-commit.ci/latest/github/ansible-community/ansible-pygments/main
