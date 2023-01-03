@@ -64,7 +64,8 @@ def test_style_highlighting(style_class_object):
 
     expected_styled_bb_code_txt = (
         '[color=#0086b3]print[/color][b]([/b]'
-        '[color=#dd1144]"thing"[/color][b])[/b]\n'
+        '[color=#dd1144]"thing"[/color][b])[/b]'
+        '[color=#bbbbbb]\n[/color]'
     )
 
     with StringIO() as io_stream:
