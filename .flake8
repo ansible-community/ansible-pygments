@@ -32,9 +32,12 @@ extend-exclude =
 # IMPORTANT: avoid using ignore option, always use extend-ignore instead
 # Completely and unconditionally ignore the following errors:
 extend-ignore =
-  I  # flake8-isort is drunk + we have isort integrated into pre-commit
-  WPS300  # "Found local folder import" -- nothing bad about this
-  WPS306  # "Found class without a base class: *" -- we have metaclass shims
+  # flake8-isort is drunk + we have isort integrated into pre-commit
+  I,
+  # "Found local folder import" -- nothing bad about this
+  WPS300,
+  # "Found class without a base class: *" -- we have metaclass shims
+  WPS306,
 
 # Let's not overcomplicate the code:
 max-complexity = 10

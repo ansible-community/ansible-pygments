@@ -735,8 +735,7 @@ jobs:
           }},
           Py-${{
             steps.python-install.outputs.python-version
-          }},
-          ${{ env.ARTIFACT_NAME }}
+          }}
 
   check:  # This job does nothing and is only used for the branch protection
     if: always()

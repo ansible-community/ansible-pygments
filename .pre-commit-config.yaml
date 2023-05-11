@@ -1,24 +1,24 @@
 ---
 repos:
 - repo: https://github.com/asottile/add-trailing-comma.git
-  rev: v2.1.0
+  rev: v2.4.0
   hooks:
   - id: add-trailing-comma
 
 - repo: https://github.com/PyCQA/isort.git
-  rev: 5.8.0
+  rev: 5.12.0
   hooks:
   - id: isort
     args:
     - --honor-noqa
 
 - repo: https://github.com/Lucas-C/pre-commit-hooks.git
-  rev: v1.1.10
+  rev: v1.5.1
   hooks:
   - id: remove-tabs
 
 - repo: https://github.com/pre-commit/pre-commit-hooks.git
-  rev: v4.0.1
+  rev: v4.4.0
   hooks:
   # Side-effects:
   - id: end-of-file-fixer
@@ -51,17 +51,17 @@ repos:
       ^README\.rst$
 
 - repo: https://github.com/pycqa/pydocstyle.git
-  rev: 6.1.1
+  rev: 6.3.0
   hooks:
   - id: pydocstyle
 
 - repo: https://github.com/codespell-project/codespell
-  rev: v2.0.0
+  rev: v2.2.4
   hooks:
   - id: codespell
 
 - repo: https://github.com/adrienverge/yamllint.git
-  rev: v1.24.2
+  rev: v1.31.0
   hooks:
   - id: yamllint
     files: \.(yaml|yml)$
@@ -72,7 +72,7 @@ repos:
     - --strict
 
 - repo: https://github.com/PyCQA/flake8.git
-  rev: 3.9.2
+  rev: 6.0.0
   hooks:
   - id: flake8
     additional_dependencies:
