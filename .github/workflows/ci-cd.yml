@@ -758,61 +758,65 @@ jobs:
           }}
         jobs: ${{ toJSON(needs) }}
 
-  publish:
-    name: Publish 🐍📦 to (Test)PyPI
+  publish-pypi:
+    name: Publish 🐍📦 ${{ needs.pre-setup.outputs.git-tag }} to PyPI
     needs:
     - check
     - pre-setup  # transitive, for accessing settings
     if: >-
-      fromJSON(needs.pre-setup.outputs.is-untagged-devel) ||
       fromJSON(needs.pre-setup.outputs.release-requested)
-    runs-on: ${{ matrix.os }}
-    strategy:
-      # NOTE: Even though it's one job, it's easier to keep the params in one
-      # NOTE: place using a matrix:
-      matrix:
-        os:
-        - ubuntu-latest
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write  # PyPI Trusted Publishing (OIDC)
+
+    environment:
+      name: pypi
+      url: >-
+        https://pypi.org/project/ansible-pygments/${{
+          needs.pre-setup.outputs.dist-version
+        }}
 
     steps:
-    - name: Check out src from Git
-      if: fromJSON(needs.pre-setup.outputs.release-requested)
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-    - name: Setup git user as [bot]
-      if: fromJSON(needs.pre-setup.outputs.release-requested)
-      uses: fregante/setup-git-user@v1.1.0
-
-    - name: >-
-        Tag the release in the local Git repo
-        as ${{ needs.pre-setup.outputs.git-tag }}
-      if: fromJSON(needs.pre-setup.outputs.release-requested)
-      run: >-
-        git tag '${{ needs.pre-setup.outputs.git-tag }}'
-        ${{ github.event.inputs.release-committish }}
     - name: Download all the dists
       uses: actions/download-artifact@v3
       with:
         name: python-package-distributions
         path: dist/
-    - name: Publish 🐍📦  ${{ needs.pre-setup.outputs.git-tag }}to TestPyPI
-      if: >-
-        fromJSON(needs.pre-setup.outputs.is-untagged-devel) ||
-        fromJSON(needs.pre-setup.outputs.release-requested)
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        password: ${{ secrets.TESTPYPI_API_TOKEN }}
-        repository_url: https://test.pypi.org/legacy/
-    - name: Publish 🐍📦 ${{ needs.pre-setup.outputs.git-tag }} to PyPI
-      if: fromJSON(needs.pre-setup.outputs.release-requested)
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        password: ${{ secrets.PYPI_API_TOKEN }}
     - name: >-
-        Push ${{ needs.pre-setup.outputs.git-tag }} tag corresponding
-        to the just published release back to GitHub
-      if: fromJSON(needs.pre-setup.outputs.release-requested)
-      run: >-
-        git push --atomic origin '${{ needs.pre-setup.outputs.git-tag }}'
+        Publish 🐍📦 ${{ needs.pre-setup.outputs.git-tag }} to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+
+  publish-testpypi:
+    name: Publish 🐍📦 ${{ needs.pre-setup.outputs.git-tag }} to TestPyPI
+    needs:
+    - check
+    - pre-setup  # transitive, for accessing settings
+    if: >-
+      fromJSON(needs.pre-setup.outputs.is-untagged-devel)
+      || fromJSON(needs.pre-setup.outputs.release-requested)
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write  # PyPI Trusted Publishing (OIDC)
+
+    environment:
+      name: testpypi
+      url: >-
+        https://test.pypi.org/project/ansible-pygments/${{
+          needs.pre-setup.outputs.dist-version
+        }}
+
+    steps:
+    - name: Download all the dists
+      uses: actions/download-artifact@v3
+      with:
+        name: python-package-distributions
+        path: dist/
+    - name: >-
+        Publish 🐍📦 ${{ needs.pre-setup.outputs.git-tag }} to TestPyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        repository-url: https://test.pypi.org/legacy/
+
 ...
