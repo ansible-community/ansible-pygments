@@ -8,6 +8,7 @@ source =
   src/ansible_pygments
   */src/ansible_pygments
   .tox/*/lib/python*/site-packages/ansible_pygments
+  .tox/*/lib/pypy*/site-packages/ansible_pygments
 
 [report]
 skip_covered = true
