@@ -18,7 +18,7 @@ repos:
   - id: remove-tabs
 
 - repo: https://github.com/pre-commit/pre-commit-hooks.git
-  rev: v4.4.0
+  rev: v4.5.0
   hooks:
   # Side-effects:
   - id: end-of-file-fixer
