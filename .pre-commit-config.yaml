@@ -13,7 +13,7 @@ repos:
     - --honor-noqa
 
 - repo: https://github.com/Lucas-C/pre-commit-hooks.git
-  rev: v1.5.4
+  rev: v1.5.5
   hooks:
   - id: remove-tabs
 
@@ -61,7 +61,7 @@ repos:
   - id: codespell
 
 - repo: https://github.com/adrienverge/yamllint.git
-  rev: v1.34.0
+  rev: v1.35.1
   hooks:
   - id: yamllint
     files: \.(yaml|yml)$
