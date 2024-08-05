@@ -527,6 +527,11 @@ jobs:
           python-version: pypy-3.6
         - os: macos-latest
           python-version: pypy-3.6
+        # CPython 3.6 and 3.7 is no longer available on macos-latest
+        - os: macos-latest
+          python-version: 3.6
+        - os: macos-latest
+          python-version: 3.7
         include:
         # NOTE: The last GNU/Linux CPython 3.6 available is built for Ubuntu 20
         # https://github.com/actions/python-versions/blob/6dd0b75/versions-manifest.json#L3956-L3960
