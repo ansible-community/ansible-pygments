@@ -18,7 +18,7 @@ repos:
   - id: remove-tabs
 
 - repo: https://github.com/pre-commit/pre-commit-hooks.git
-  rev: v4.5.0
+  rev: v4.6.0
   hooks:
   # Side-effects:
   - id: end-of-file-fixer
@@ -56,7 +56,7 @@ repos:
   - id: pydocstyle
 
 - repo: https://github.com/codespell-project/codespell
-  rev: v2.2.6
+  rev: v2.3.0
   hooks:
   - id: codespell
 
@@ -72,7 +72,7 @@ repos:
     - --strict
 
 - repo: https://github.com/PyCQA/flake8.git
-  rev: 7.0.0
+  rev: 7.1.1
   hooks:
   - id: flake8
     additional_dependencies:
