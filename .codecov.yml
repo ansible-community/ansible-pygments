@@ -1,0 +1,14 @@
+# reference: https://docs.codecov.io/docs/codecovyml-reference
+---
+
+codecov:
+  token: fd28fc15-fbc2-44fd-8d7b-7345a2e9a135
+
+comment: false
+
+coverage:
+  status:
+    patch: true
+    project: true
+
+...
