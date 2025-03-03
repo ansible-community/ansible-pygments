@@ -6,7 +6,7 @@ repos:
   - id: add-trailing-comma
 
 - repo: https://github.com/PyCQA/isort.git
-  rev: 6.0.0
+  rev: 6.0.1
   hooks:
   - id: isort
     args:
