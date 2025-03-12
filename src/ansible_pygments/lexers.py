@@ -36,11 +36,11 @@
 
 from __future__ import annotations
 
-# pylint: disable=consider-using-f-string
-
 from pygments import token
 from pygments.lexer import DelegatingLexer, RegexLexer, bygroups, include
 from pygments.lexers import DiffLexer  # pylint: disable=no-name-in-module
+
+# pylint: disable=consider-using-f-string
 
 
 class AnsibleOutputPrimaryLexer(RegexLexer):
