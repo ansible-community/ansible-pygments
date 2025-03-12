@@ -35,7 +35,7 @@ Ansible = "ansible_pygments.styles:AnsibleStyle"
 ansible = "ansible_pygments.styles:AnsibleStyle"
 
 [tool.poetry.dependencies]
-python = "^3.9.0"
+python = ">= 3.9.0"
 # Pygments 2.4.0 includes bugfixes for YAML and YAML+Jinja lexers
 pygments = ">= 2.4.0"
 
