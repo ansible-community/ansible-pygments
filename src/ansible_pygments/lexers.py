@@ -34,6 +34,8 @@
 
 """Pygments lexers for ansible console output."""
 
+from __future__ import annotations
+
 # pylint: disable=consider-using-f-string
 
 from pygments import token
