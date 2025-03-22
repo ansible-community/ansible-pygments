@@ -32,13 +32,13 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+# pylint: disable=consider-using-f-string
+
 """Pygments lexers for ansible console output."""
 
 from pygments import token
 from pygments.lexer import DelegatingLexer, RegexLexer, bygroups, include
 from pygments.lexers import DiffLexer  # pylint: disable=no-name-in-module
-
-# pylint: disable=consider-using-f-string
 
 
 class AnsibleOutputPrimaryLexer(RegexLexer):
