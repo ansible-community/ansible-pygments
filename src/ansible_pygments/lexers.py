@@ -32,9 +32,9 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-"""Pygments lexers for ansible console output."""
-
 # pylint: disable=consider-using-f-string
+
+"""Pygments lexers for ansible console output."""
 
 from pygments import token
 from pygments.lexer import DelegatingLexer, RegexLexer, bygroups, include
