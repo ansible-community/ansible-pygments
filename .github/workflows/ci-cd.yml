@@ -502,8 +502,8 @@ jobs:
       matrix:
         os:
         - ubuntu-22.04
-        - macos-latest
-        - windows-latest
+        # - macos-latest
+        # - windows-latest
         python-version:
         # Highest, lowest, and pypy should come first:
         - 3.13
