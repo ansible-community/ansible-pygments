@@ -92,7 +92,7 @@ jobs:
     - name: >-
         Switch to using Python v${{ matrix.python-version }}
         by default
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
     - name: >-
@@ -119,7 +119,7 @@ jobs:
       run: >-
         echo "dir=$(python -m pip cache dir)" >> "${GITHUB_OUTPUT}"
     - name: Set up pip cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ${{ steps.pip-cache.outputs.dir }}
         key: >-
@@ -139,7 +139,7 @@ jobs:
         tox
 
     - name: Grab the source from Git
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Pre-populate tox env
       run: >-
@@ -191,7 +191,7 @@ jobs:
       wheel-artifact-name: ${{ steps.artifact-name.outputs.wheel }}
     steps:
     - name: Switch to using Python 3.13 by default
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: 3.13
     - name: >-
@@ -229,7 +229,7 @@ jobs:
     - name: Check out src from Git
       if: >-
         steps.request-check.outputs.release-requested != 'true'
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
         ref: ${{ github.event.inputs.release-committish }}
@@ -279,7 +279,7 @@ jobs:
     - name: Set up pip cache
       if: >-
         steps.request-check.outputs.release-requested != 'true'
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: >-
           ${{
@@ -396,7 +396,7 @@ jobs:
 
     steps:
     - name: Switch to using Python 3.13 by default
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: 3.13
     - name: >-
@@ -423,7 +423,7 @@ jobs:
       run: >-
         echo "dir=$(python -m pip cache dir)" >> "${GITHUB_OUTPUT}"
     - name: Set up pip cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ${{ steps.pip-cache.outputs.dir }}
         key: >-
@@ -443,7 +443,7 @@ jobs:
         tox
 
     - name: Grab the source from Git
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         ref: ${{ github.event.inputs.release-committish }}
     - name: >-
@@ -541,12 +541,12 @@ jobs:
     steps:
     - name: Set up Python ${{ matrix.python-version }}
       id: python-install
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
 
     - name: Grab the source from Git
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         ref: ${{ github.event.inputs.release-committish }}
 
@@ -598,7 +598,7 @@ jobs:
       shell: bash
     - name: Set up pip cache
       if: fromJSON(steps.py-abi.outputs.is-stable-abi)
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ${{ steps.pip-cache.outputs.dir }}
         key: >-
@@ -659,7 +659,7 @@ jobs:
     - name: Produce markdown test summary from JUnit
       if: >-
         !cancelled()
-      uses: test-summary/action@v2.0
+      uses: test-summary/action@v2.4
       with:
         paths: .test-results/pytest/results.xml
     - name: Check if Cobertura XML coverage files exist
@@ -706,7 +706,7 @@ jobs:
     - name: Send coverage data to Codecov
       if: >-
         !cancelled()
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v5
       with:
         files: .test-results/pytest/cov.xml
         flags: >-
