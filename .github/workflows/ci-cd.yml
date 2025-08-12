@@ -139,7 +139,7 @@ jobs:
         tox
 
     - name: Grab the source from Git
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Pre-populate tox env
       run: >-
@@ -229,7 +229,7 @@ jobs:
     - name: Check out src from Git
       if: >-
         steps.request-check.outputs.release-requested != 'true'
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0
         ref: ${{ github.event.inputs.release-committish }}
@@ -443,7 +443,7 @@ jobs:
         tox
 
     - name: Grab the source from Git
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         ref: ${{ github.event.inputs.release-committish }}
     - name: >-
@@ -546,7 +546,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Grab the source from Git
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         ref: ${{ github.event.inputs.release-committish }}
 
@@ -631,7 +631,7 @@ jobs:
       shell: bash
 
     - name: Download all the dists
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: python-package-distributions
         path: dist/
@@ -763,7 +763,7 @@ jobs:
 
     steps:
     - name: Download all the dists
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: python-package-distributions
         path: dist/
@@ -793,7 +793,7 @@ jobs:
 
     steps:
     - name: Download all the dists
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: python-package-distributions
         path: dist/
