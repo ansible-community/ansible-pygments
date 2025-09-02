@@ -13,13 +13,13 @@ source =
 [report]
 skip_covered = true
 show_missing = true
-exclude_lines =
-    \#\s*pragma: no cover
-    ^\s*raise AssertionError\b
-    ^\s*raise NotImplementedError\b
-    ^\s*return NotImplemented\b
-    ^\s*raise$
-    ^if __name__ == ['"]__main__['"]:$
+exclude_also =
+  \#\s*pragma: no cover
+  ^\s*raise AssertionError\b
+  ^\s*raise NotImplementedError\b
+  ^\s*return NotImplemented\b
+  ^\s*raise$
+  ^if __name__ == ['"]__main__['"]:$
 
 [run]
 branch = true

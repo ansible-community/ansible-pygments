@@ -77,12 +77,13 @@ pytest-mark-no-parentheses = true
 
 # flake8-rst-docstrings
 rst-roles =
-    # Built-in Sphinx roles:
-    class,
-    py:class,
-    py:meth,
-    # Sphinx's internal role:
-    event,
+  # Built-in Sphinx roles:
+  class,
+  py:class,
+  py:data,
+  py:meth,
+  # Sphinx's internal role:
+  event,
 
 # wemake-python-styleguide
 show-source = true
