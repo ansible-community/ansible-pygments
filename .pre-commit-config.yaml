@@ -23,6 +23,8 @@ repos:
   # Side-effects:
   - id: end-of-file-fixer
   - id: requirements-txt-fixer
+    exclude: >-
+      ^dependencies/lock-files/.*\.txt$
   - id: trailing-whitespace
   - id: mixed-line-ending
   # Non-modifying checks:
