@@ -22,6 +22,7 @@ exclude_also =
   ^\s*return NotImplemented\b
   ^\s*raise$
   ^if __name__ == ['"]__main__['"]:$
+fail_under = 96.72
 
 [run]
 branch = true
