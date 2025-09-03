@@ -26,6 +26,8 @@ branch = true
 command_line = -m pytest
 cover_pylib = false
 parallel = true
+plugins =
+  covdefaults
 relative_files = true
 source =
   ansible_pygments
