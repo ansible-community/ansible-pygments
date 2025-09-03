@@ -5,10 +5,12 @@ skip_covered = false
 
 [paths]
 source =
-  src/ansible_pygments
-  */src/ansible_pygments
-  .tox/*/lib/python*/site-packages/ansible_pygments
-  .tox/*/lib/pypy*/site-packages/ansible_pygments
+  src
+  */src
+  *\src
+  */lib/python*/site-packages
+  */pypy*/site-packages
+  *\Lib\site-packages
 
 [report]
 skip_covered = true
