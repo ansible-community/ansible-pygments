@@ -32,5 +32,6 @@ plugins =
   covdefaults
 relative_files = true
 source =
+  .
+source_pkgs =
   ansible_pygments
-  tests
