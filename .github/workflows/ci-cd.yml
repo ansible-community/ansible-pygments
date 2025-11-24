@@ -139,7 +139,7 @@ jobs:
         tox
 
     - name: Grab the source from Git
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - name: Pre-populate tox env
       run: >-
@@ -229,7 +229,7 @@ jobs:
     - name: Check out src from Git
       if: >-
         steps.request-check.outputs.release-requested != 'true'
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         fetch-depth: 0
         ref: ${{ github.event.inputs.release-committish }}
@@ -444,7 +444,7 @@ jobs:
         tox
 
     - name: Grab the source from Git
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         ref: ${{ github.event.inputs.release-committish }}
     - name: >-
@@ -547,7 +547,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Grab the source from Git
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         ref: ${{ github.event.inputs.release-committish }}
 
