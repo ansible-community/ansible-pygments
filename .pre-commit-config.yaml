@@ -1,24 +1,24 @@
 ---
 repos:
 - repo: https://github.com/asottile/add-trailing-comma.git
-  rev: v3.2.0
+  rev: v4.0.0
   hooks:
   - id: add-trailing-comma
 
 - repo: https://github.com/PyCQA/isort.git
-  rev: 6.0.1
+  rev: 7.0.0
   hooks:
   - id: isort
     args:
     - --honor-noqa
 
 - repo: https://github.com/Lucas-C/pre-commit-hooks.git
-  rev: v1.5.5
+  rev: v1.5.6
   hooks:
   - id: remove-tabs
 
 - repo: https://github.com/pre-commit/pre-commit-hooks.git
-  rev: v5.0.0
+  rev: v6.0.0
   hooks:
   # Side-effects:
   - id: end-of-file-fixer
@@ -63,7 +63,7 @@ repos:
   - id: codespell
 
 - repo: https://github.com/adrienverge/yamllint.git
-  rev: v1.37.1
+  rev: v1.38.0
   hooks:
   - id: yamllint
     files: \.(yaml|yml)$
