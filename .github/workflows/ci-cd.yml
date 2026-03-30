@@ -707,7 +707,7 @@ jobs:
     - name: Send coverage data to Codecov
       if: >-
         !cancelled()
-      uses: codecov/codecov-action@v5
+      uses: codecov/codecov-action@v6
       with:
         files: .test-results/pytest/cov.xml
         flags: >-
