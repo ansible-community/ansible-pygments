@@ -660,7 +660,7 @@ jobs:
     - name: Produce markdown test summary from JUnit
       if: >-
         !cancelled()
-      uses: test-summary/action@v2.4
+      uses: test-summary/action@v2.6
       with:
         paths: .test-results/pytest/results.xml
     - name: Check if Cobertura XML coverage files exist
